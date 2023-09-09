@@ -3,6 +3,12 @@ project(id3tag VERSION 0.16.2)
 
 option(BUILD_SHARED_LIBS "Build dynamic library" ON)
 
+# The new SOVERSION. This is 0.16.2 by default
+# The general policy is that minor versions of the library (e.g., 0.16.1,
+# 0.16.2) don't constitute an ABI breakage. Major versions (e.g., 0.17, 0.18)
+# do constitute an ABI breakage.
+set(LIBRARY_SOVERSION 0)
+
 include(GNUInstallDirs)
 
 #
@@ -40,7 +46,7 @@ endif()
 
 set_target_properties(id3tag PROPERTIES
   VERSION ${CMAKE_PROJECT_VERSION}
-  SOVERSION ${CMAKE_PROJECT_VERSION}
+  SOVERSION ${LIBRARY_SOVERSION}
 )
 
 include(CheckIncludeFile)

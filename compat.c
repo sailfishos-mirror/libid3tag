@@ -88,9 +88,7 @@ inline
 #endif
 #endif
 static unsigned int
-hash (str, len)
-     register const char *str;
-     register unsigned int len;
+hash (register const char* str, register unsigned int len)
 {
   static const unsigned char asso_values[] =
     {
@@ -145,9 +143,7 @@ hash (str, len)
 __inline
 #endif
 const struct id3_compat *
-id3_compat_lookup (str, len)
-     register const char *str;
-     register size_t len;
+id3_compat_lookup(register const char *str, register size_t len)
 {
   static const struct id3_compat wordlist[] =
     {

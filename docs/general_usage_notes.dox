@@ -1,0 +1,67 @@
+/** @page usage General Usage Notes
+ *
+ * This page contains general usage notes on using the library. Keep these
+ * notes in mind as you read the rest of the documentation.
+ *
+ * Note that this page also acts a guide for contributors looking to add new
+ * functions or structures to the library. In any case, one may not necessarily
+ * need a page like this, but this will act as official project policy for now.
+ *
+ * @section usage_naming_conventions Naming Conventions
+ * For naming a structure, there are two parts:
+ *
+ * 1. The `id3_` prefix
+ * 2. The `name` of the structure.
+ *
+ * To visualize this convention all in one line, you have `id3_[name]`. This
+ * way, the library is separated into different parts and is more easily
+ * understandable.
+ *
+ * For functions, they are essentially named after the structure they work with
+ * so users understand they either require a struct of that same name or give
+ * you a struct in that name (in the case of any creation functions). After the
+ * structure name is their name, and their name should be descriptive of what
+ * they do.
+ *
+ * To look at an example, the `id3_field` structure has a group of `field`, and
+ * the `id3_field_addstring()` function is named after this structure and adds
+ * a string to it (or, more specifically, an ID3 field).
+ *
+ * @subsection usage_groups
+ * Referring back to earlier, `group` can be one of the following:
+ *
+ *   - `field`
+ *   - `frame`
+ *   - `genre`
+ *   - `latin1`
+ *   - `tag`
+ *   - `ucs4`
+ *   - `utf8`
+ *   - `utf16`
+ *
+ * For contributors, if adding a struct, the name of the group will follow the
+ * name of the struct since, as stated earlier, symbols of the form `id3_group`
+ * are just structs. For example, if adding a struct named `id3_something`,
+ * then the group name will be `something`, and functions operating on an
+ * `id3_something` struct will start with `id3_something_`.
+ *
+ * @section usage_memory_allocations Memory Allocations
+ * @subsection usage_allocating_structures Where to Allocate Structures
+ * All structures __must__ be allocated on the heap. __Never allocate them on
+ * the stack__.
+ *
+ * Use the appropriate `id3_XXXX_new()` function to allocate structures.
+ * __Never manually allocate the structure yourself__.
+ *
+ * @subsection usage_references References
+ * Most structs in libid3tag can be reference counted. If a struct `somestruct`
+ * has corresponding `id3_somestruct_addref` and `id3_somestruct_delref`
+ * functions, it is reference countable. (Those functions increment and
+ * decrement the reference counter, respectively).
+ *
+ * You are solely responsible for ensuring all references to a struct are
+ * cleaned up before deleting a frame. Deleting a reference counted structure
+ * (i.e., calling `id3_XXXX_delete()`) will NEITHER deallocate it nor decrease
+ * its reference count.
+ *
+ **/

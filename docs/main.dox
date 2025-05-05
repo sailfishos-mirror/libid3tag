@@ -1,0 +1,53 @@
+/** @mainpage Welcome to libid3tag!
+ *
+ * @section intro Introduction
+ *
+ * Welcome to libid3tag's documentation! Here, you'll find important
+ * information on using the library.
+ *
+ * Note that these docs are a work in progress. Feel free to assist us in
+ * documenting more of the library.
+ *
+ * For important information on upgrading existing libid3tag packages, please
+ * see @ref packaging.
+ *
+ * @section fork_vs_upstream This Fork vs Upstream
+ *
+ * __This documentation cover's Tenacity's fork of libid3tag__. Although you
+ * are using a fork, you are accompanied by major users in doing so, such as
+ * Debian, Ubuntu, Fedora, vcpkg, and plenty of other projects too. We have
+ * become the *de facto* new upstream, and for good reason as we explain below.
+ *
+ * @subsection patches Patches
+ * Original upstream development of libid3tag ceased in 2004. Since then,
+ * several vulnerabilities were discovered, and the open source community
+ * developed several patches to fix these vulnerabilities. Despite this effort,
+ * not all libid3tag packages contained these patches. While most Linux
+ * distributions did, other projects, such as vcpkg for example, did not. This
+ * meant that these fixes were not evenly applied, and some packages remained
+ * vulnerable to these security issues despite there being fixes easily
+ * available.
+ *
+ * In contrast, our fork has integrated these patches. Any project using this
+ * fork is guaranteed to have these security vulnerabilities fixed. Since there
+ * is now an upstream behind libid3tag again, not only can members of various
+ * open source communities submit their fixes to a central upstream, but
+ * packagers can also rely on a single source for various fixes, security or
+ * otherwise.
+ *
+ * @subsection build_system Build System
+ * The original upstream previously used an autotools build system for
+ * Unix-based/Unix-like systems alongside Visual Studio projects for Windows.
+ * This meant that there were two different ways to build the library depending
+ * on your platform. In contrast, this fork uses a CMake build system for all
+ * platforms, simplifying the build process for all platforms. In addition,
+ * CMake's syntax makes the build system easier to work with compared to
+ * autotools' syntax.
+ *
+ * @subsection better_docs Documentation
+ * Starting in version 0.16.4, we now document the library using Doxygen, which
+ * is automatically generated from the source code along with other separate
+ * pages containing additional important information. No longer do you have to
+ * look through the source code of the library to figure out what a function is
+ * supposed to do.
+ **/

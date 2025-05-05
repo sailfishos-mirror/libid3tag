@@ -1,0 +1,16 @@
+/** @page stability API and ABI Stability
+ *
+ * Across the same major versions of the library (e.g., 0.16, 0.17, etc), we
+ * aim to keep both our API and ABI stable.
+ *
+ * Keep in mind that while we aim to maintain compatibility with programs built
+ * against 0.15.1b, the 0.16.x series is ABI incompatible with the 0.15.1b
+ * _with some exceptions_ (see @ref packaging_abi_incompatibilities for a
+ * criteria of determining ABI compatibility if interested). This should be
+ * expected as there is a difference between in major version numbers between
+ * our fork versus the original upstream (0.16 versus 0.15).
+ *
+ * For the current 0.16.x releases, ABI compatibility between releases is
+ * maintained.
+ *
+ **/

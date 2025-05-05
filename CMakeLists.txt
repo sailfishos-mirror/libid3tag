@@ -150,6 +150,9 @@ install(
   DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
+# Prepare documentation
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile.in" "${CMAKE_BINARY_DIR}/Doxyfile" @ONLY)
+
 # pkgconfig
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/packaging/id3tag.pc.in
   ${CMAKE_CURRENT_BINARY_DIR}/packaging/id3tag.pc @ONLY)

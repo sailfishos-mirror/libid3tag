@@ -1,0 +1,52 @@
+/** @page packaging Packaging
+ *
+ * This page is for anyone looking to package our fork of libid3tag, primarily
+ * for upgrading existing packages to our fork but also for maintaining your
+ * libid3tag packages going forward. If you have previously packaged libid3tag
+ * 0.15.1b, radical changes shouldn't be required. However, there are two
+ * important things of note: the build system and potential ABI
+ * incompatibilities.
+ *
+ * Given that our major version number is larger (0.16 compared to 0.15), it
+ * should be expected that there be some incompatbile changes. Luckily, no
+ * source-level incompatibilities exist between 0.15.1b and the 0.16.x branch.
+ * All other breaking changes are documented below.
+ *
+ * @section packaging_migrating Migrating from 0.15.1b
+ * @subsection packaging_build_system The Build System
+ *
+ * One of the major changes you need to make in your package is to adapt to the
+ * build system changes. libid3tag now uses CMake instead of autotools, so
+ * CMake must be used instead. Consult your appropriate packager documentation
+ * to learn how to package a CMake-based project. Also consult the README in
+ * the libid3tag source tree on how to compile the library.
+ *
+ * @subsection packaging_abi_incompatibilities ABI Incompatibilities
+ *
+ * A previously applied patch, `libid3tag-0.15.1b-64bit-long.patch` from
+ * Gentoo, causes an ABI breakage as it changes the typedef `id3_ucs4_t` from
+ * `unsigned long` to `uint32_t`. __This is the breaking change between 0.15.1b
+ * and the 0.16.x releases__. To remedy this, we recommend rebuilding all
+ * packages dependent on libid3tag. However, technically speaking, you also
+ * don't need to if you meet the following criteria below:
+ *
+ *   1. Your target has a 4 byte `unsigned long`.
+ *   2. Your package previously applied the aforementioned patch.
+ *
+ * Again, the safest option is to rebuild your package if you're in doubt or
+ * otherwise.
+ *
+ * @subsection packaging_patches Patches
+ *
+ * When switching to our fork of libid3tag, you will likely have patches
+ * applied. Most likely they can be dropped, but you may still have to keep
+ * some patches.
+ *
+ * If you find that you still have to keep a patch, we highly recommend
+ * submitting a pull request to merge it into the main library. Visit
+ * https://codeberg.org/tenacityteam/libid3tag for submitting a pull request.
+ * Even if the patch is from over a decade ago, there's a good chance that it
+ * can be applied with little modification for this fork. By submitting a patch
+ * upstream, not only will others benefit from your fix, but you also reduce
+ * the maintenance burden on maintaining your libid3tag package.
+ **/

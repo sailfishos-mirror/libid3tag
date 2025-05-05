@@ -11,30 +11,33 @@ set(LIBRARY_SOVERSION 0)
 
 include(GNUInstallDirs)
 
-#
-# Build
-#
-
+# Build (see src/CMakeLists.txt)
 add_library(id3tag
-    compat.c
-    crc.c
-    debug.c
-    field.c
-    file.c
-    frame.c
-    frametype.c
-    genre.c
-    latin1.c
-    parse.c
-    render.c
-    tag.c
-    ucs4.c
-    utf16.c
-    utf8.c
-    util.c
-    version.c
+    src/compat.c
+    src/crc.c
+    src/debug.c
+    src/field.c
+    src/file.c
+    src/frame.c
+    src/frametype.c
+    src/genre.c
+    src/latin1.c
+    src/parse.c
+    src/render.c
+    src/tag.c
+    src/ucs4.c
+    src/utf16.c
+    src/utf8.c
+    src/util.c
+    src/version.c
 )
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/id3tag.h.in ${CMAKE_CURRENT_BINARY_DIR}/id3tag.h @ONLY)
+
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include/id3tag.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/id3tag.h
+  @ONLY
+)
+
 target_include_directories(id3tag PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>

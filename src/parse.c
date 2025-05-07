@@ -79,15 +79,15 @@ unsigned long id3_parse_syncsafe(id3_byte_t const **ptr, unsigned int bytes)
   case 5: value = (value << 4) | (*(*ptr)++ & 0x0f);
   case 4: value = (value << 7) | (*(*ptr)++ & 0x7f);
           value = (value << 7) | (*(*ptr)++ & 0x7f);
-	  value = (value << 7) | (*(*ptr)++ & 0x7f);
-	  value = (value << 7) | (*(*ptr)++ & 0x7f);
+    value = (value << 7) | (*(*ptr)++ & 0x7f);
+    value = (value << 7) | (*(*ptr)++ & 0x7f);
   }
 
   return value;
 }
 
 void id3_parse_immediate(id3_byte_t const **ptr, unsigned int bytes,
-			 char *value)
+       char *value)
 {
   assert(value);
   assert(bytes == 8 || bytes == 4 || bytes == 3);
@@ -95,19 +95,19 @@ void id3_parse_immediate(id3_byte_t const **ptr, unsigned int bytes,
   switch (bytes) {
   case 8: *value++ = *(*ptr)++;
           *value++ = *(*ptr)++;
-	  *value++ = *(*ptr)++;
-	  *value++ = *(*ptr)++;
+    *value++ = *(*ptr)++;
+    *value++ = *(*ptr)++;
   case 4: *value++ = *(*ptr)++;
   case 3: *value++ = *(*ptr)++;
           *value++ = *(*ptr)++;
-	  *value++ = *(*ptr)++;
+    *value++ = *(*ptr)++;
   }
 
   *value = 0;
 }
 
 id3_latin1_t *id3_parse_latin1(id3_byte_t const **ptr, id3_length_t length,
-			       int full)
+             int full)
 {
   id3_byte_t const *end;
   int terminated = 0;
@@ -130,8 +130,8 @@ id3_latin1_t *id3_parse_latin1(id3_byte_t const **ptr, id3_length_t length,
       id3_latin1_t *check;
 
       for (check = latin1; *check; ++check) {
-	if (*check == '\n')
-	  *check = ' ';
+        if (*check == '\n')
+          *check = ' ';
       }
     }
   }
@@ -142,7 +142,7 @@ id3_latin1_t *id3_parse_latin1(id3_byte_t const **ptr, id3_length_t length,
 }
 
 id3_ucs4_t *id3_parse_string(id3_byte_t const **ptr, id3_length_t length,
-			     enum id3_field_textencoding encoding, int full)
+           enum id3_field_textencoding encoding, int full)
 {
   id3_ucs4_t *ucs4 = 0;
   enum id3_utf16_byteorder byteorder = ID3_UTF16_BYTEORDER_ANY;
@@ -162,8 +162,8 @@ id3_ucs4_t *id3_parse_string(id3_byte_t const **ptr, id3_length_t length,
     ucs4 = id3_utf8_deserialize(ptr, length);
     break;
   default:
-        /* FIXME: Unknown encoding! Print warning? */
-	return NULL;
+    /* FIXME: Unknown encoding! Print warning? */
+    return NULL;
   }
 
   if (ucs4 && !full) {
@@ -171,7 +171,7 @@ id3_ucs4_t *id3_parse_string(id3_byte_t const **ptr, id3_length_t length,
 
     for (check = ucs4; *check; ++check) {
       if (*check == '\n')
-	*check = ' ';
+        *check = ' ';
     }
   }
 

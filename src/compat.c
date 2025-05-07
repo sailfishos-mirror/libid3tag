@@ -333,7 +333,7 @@ id3_compat_lookup(register const char *str, register size_t len)
 
 static
 int translate_TCON(struct id3_frame *frame, char const *oldid,
-		   id3_byte_t const *data, id3_length_t length)
+               id3_byte_t const *data, id3_length_t length)
 {
   id3_byte_t const *end;
   enum id3_field_textencoding encoding;
@@ -420,8 +420,8 @@ int id3_compat_fixup(struct id3_tag *tag)
     assert(id);
 
     if (strcmp(id, "TYER") != 0 && strcmp(id, "YTYE") != 0 &&
-	strcmp(id, "TDAT") != 0 && strcmp(id, "YTDA") != 0 &&
-	strcmp(id, "TIME") != 0 && strcmp(id, "YTIM") != 0)
+       strcmp(id, "TDAT") != 0 && strcmp(id, "YTDA") != 0 &&
+       strcmp(id, "TIME") != 0 && strcmp(id, "YTIM") != 0)
       continue;
 
     data = id3_field_getbinarydata(&frame->fields[1], &length);
@@ -435,8 +435,8 @@ int id3_compat_fixup(struct id3_tag *tag)
     encoding = id3_parse_uint(&data, 1);
     string   = id3_parse_string(&data, end - data, encoding, 0);
 
-	if (!string)
-		continue;
+    if (!string)
+      continue;
 
     if (id3_ucs4_length(string) < 4) {
       free(string);
@@ -444,14 +444,14 @@ int id3_compat_fixup(struct id3_tag *tag)
     }
 
     if (strcmp(id, "TYER") == 0 ||
-	strcmp(id, "YTYE") == 0) {
+        strcmp(id, "YTYE") == 0) {
       timestamp[0] = string[0];
       timestamp[1] = string[1];
       timestamp[2] = string[2];
       timestamp[3] = string[3];
     }
     else if (strcmp(id, "TDAT") == 0 ||
-	     strcmp(id, "YTDA") == 0) {
+             strcmp(id, "YTDA") == 0) {
       timestamp[4] = '-';
       timestamp[5] = string[2];
       timestamp[6] = string[3];
@@ -481,9 +481,9 @@ int id3_compat_fixup(struct id3_tag *tag)
     strings = timestamp;
 
     if (id3_field_settextencoding(&frame->fields[0],
-				  ID3_FIELD_TEXTENCODING_ISO_8859_1) == -1 ||
-	id3_field_setstrings(&frame->fields[1], 1, &strings) == -1 ||
-	id3_tag_attachframe(tag, frame) == -1) {
+          ID3_FIELD_TEXTENCODING_ISO_8859_1) == -1 ||
+        id3_field_setstrings(&frame->fields[1], 1, &strings) == -1 ||
+        id3_tag_attachframe(tag, frame) == -1) {
       id3_frame_delete(frame);
       goto fail;
     }

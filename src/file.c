@@ -125,7 +125,7 @@ int update_primary(struct id3_tag *tag, struct id3_tag const *new)
     i = 0;
     while ((frame = id3_tag_findframe(new, 0, i++))) {
       if (id3_tag_attachframe(tag, frame) == -1)
-	return -1;
+        return -1;
     }
   }
 
@@ -218,10 +218,10 @@ struct id3_tag *add_tag(struct id3_file *file, id3_length_t length)
       end2   = begin2 + file->tags[i].length;
 
       if (begin1 == begin2 && end1 == end2)
-	return file->tags[i].tag;  /* duplicate */
+        return file->tags[i].tag;  /* duplicate */
 
       if (begin1 < end2 && end1 > begin2)
-	return 0;  /* overlap */
+        return 0;  /* overlap */
     }
   }
 
@@ -279,7 +279,7 @@ int search_tags(struct id3_file *file)
       /* if this is indeed an ID3v1 tag, mark the file so */
 
       if (tag && (ID3_TAG_VERSION_MAJOR(id3_tag_version(tag)) == 1))
-	file->flags |= ID3_FILE_FLAG_ID3V1;
+        file->flags |= ID3_FILE_FLAG_ID3V1;
     }
   }
 
@@ -301,7 +301,7 @@ int search_tags(struct id3_file *file)
 
       seek = id3_field_getint(id3_frame_field(frame, 0));
       if (seek < 0 || fseek(file->iofile, seek, SEEK_CUR) == -1)
-	break;
+        break;
 
       size = query_tag(file->iofile);
       tag  = (size > 0) ? add_tag(file, size) : 0;
@@ -311,12 +311,12 @@ int search_tags(struct id3_file *file)
   /* look for a tag at the end of the file (before any ID3v1 tag) */
 
   if (fseek(file->iofile, ((file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0) +
-	    -10, SEEK_END) == 0) {
+      -10, SEEK_END) == 0) {
     size = query_tag(file->iofile);
     if (size < 0 && fseek(file->iofile, size, SEEK_CUR) == 0) {
       size = query_tag(file->iofile);
       if (size > 0)
-	add_tag(file, size);
+        add_tag(file, size);
     }
   }
 
@@ -379,7 +379,7 @@ void finish_file(struct id3_file *file)
  */
 static
 struct id3_file *new_file(FILE *iofile, enum id3_file_mode mode,
-			  char const *path)
+        char const *path)
 {
   struct id3_file *file;
 
@@ -408,7 +408,7 @@ struct id3_file *new_file(FILE *iofile, enum id3_file_mode mode,
     goto fail;
 
   id3_tag_options(file->primary, ID3_TAG_OPTION_ID3V1,
-		  (file->flags & ID3_FILE_FLAG_ID3V1) ? ~0 : 0);
+      (file->flags & ID3_FILE_FLAG_ID3V1) ? ~0 : 0);
 
   if (0) {
   fail:
@@ -512,7 +512,7 @@ struct id3_tag *id3_file_tag(struct id3_file const *file)
  */
 static
 int v1_write(struct id3_file *file,
-	     id3_byte_t const *data, id3_length_t length)
+       id3_byte_t const *data, id3_length_t length)
 {
   assert(!data || length == 128);
 
@@ -520,10 +520,10 @@ int v1_write(struct id3_file *file,
     long location;
 
     if (fseek(file->iofile, (file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0,
-	      SEEK_END) == -1 ||
-	(location = ftell(file->iofile)) == -1 ||
-	fwrite(data, 128, 1, file->iofile) != 1 ||
-	fflush(file->iofile) == EOF)
+        SEEK_END) == -1 ||
+        (location = ftell(file->iofile)) == -1 ||
+        fwrite(data, 128, 1, file->iofile) != 1 ||
+        fflush(file->iofile) == EOF)
       return -1;
 
     /* add file tag reference */
@@ -536,7 +536,7 @@ int v1_write(struct id3_file *file,
       filetag.length   = 128;
 
       if (add_filetag(file, &filetag) == -1)
-	return -1;
+        return -1;
 
       file->flags |= ID3_FILE_FLAG_ID3V1;
     }
@@ -549,8 +549,7 @@ int v1_write(struct id3_file *file,
       return -1;
 
     length = ftell(file->iofile);
-    if (length == -1 ||
-	(length >= 0 && length < 128))
+    if (length == -1 || (length >= 0 && length < 128))
       return -1;
 
     if (ftruncate(fileno(file->iofile), length - 128) == -1)
@@ -573,7 +572,7 @@ int v1_write(struct id3_file *file,
  */
 static
 int v2_write(struct id3_file *file,
-	     id3_byte_t const *data, id3_length_t length)
+       id3_byte_t const *data, id3_length_t length)
 {
   struct stat st;
   char *buffer;
@@ -588,8 +587,8 @@ int v2_write(struct id3_file *file,
     /* easy special case: rewrite existing tag in-place */
 
     if (fseek(file->iofile, file->tags[0].location, SEEK_SET) == -1 ||
-	fwrite(data, length, 1, file->iofile) != 1 ||
-	fflush(file->iofile) == EOF)
+        fwrite(data, length, 1, file->iofile) != 1 ||
+        fflush(file->iofile) == EOF)
       return -1;
 
     goto done;
@@ -645,8 +644,8 @@ int id3_file_update(struct id3_file *file)
 
       v1size = id3_tag_render(file->primary, id3v1_data);
       if (v1size) {
-	assert(v1size == sizeof(id3v1_data));
-	id3v1 = id3v1_data;
+        assert(v1size == sizeof(id3v1_data));
+        id3v1 = id3v1_data;
       }
     }
   }

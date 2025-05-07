@@ -95,7 +95,7 @@ id3_ucs4_t *id3_latin1_ucs4duplicate(id3_latin1_t const *latin1)
  * DESCRIPTION:	decode a (single) latin1 char into a single ucs4 char
  */
 id3_length_t id3_latin1_decodechar(id3_latin1_t const *latin1,
-				   id3_ucs4_t *ucs4)
+           id3_ucs4_t *ucs4)
 {
   *ucs4 = *latin1;
 
@@ -163,7 +163,7 @@ id3_latin1_t id3_latin1_get(id3_byte_t const **ptr)
  * DESCRIPTION:	serialize a ucs4 string using latin1 encoding
  */
 id3_length_t id3_latin1_serialize(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
-				  int terminate)
+          int terminate)
 {
   id3_length_t size = 0;
   id3_latin1_t latin1[1], *out;

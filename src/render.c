@@ -36,7 +36,7 @@
 # include "utf8.h"
 
 id3_length_t id3_render_immediate(id3_byte_t **ptr,
-				  char const *value, unsigned int bytes)
+          char const *value, unsigned int bytes)
 {
   assert(value);
   assert(bytes == 8 || bytes == 4 || bytes == 3);
@@ -45,12 +45,12 @@ id3_length_t id3_render_immediate(id3_byte_t **ptr,
     switch (bytes) {
     case 8: *(*ptr)++ = *value++;
             *(*ptr)++ = *value++;
-	    *(*ptr)++ = *value++;
-	    *(*ptr)++ = *value++;
+      *(*ptr)++ = *value++;
+      *(*ptr)++ = *value++;
     case 4: *(*ptr)++ = *value++;
     case 3: *(*ptr)++ = *value++;
             *(*ptr)++ = *value++;
-	    *(*ptr)++ = *value++;
+      *(*ptr)++ = *value++;
     }
   }
 
@@ -58,7 +58,7 @@ id3_length_t id3_render_immediate(id3_byte_t **ptr,
 }
 
 id3_length_t id3_render_syncsafe(id3_byte_t **ptr,
-				 unsigned long num, unsigned int bytes)
+         unsigned long num, unsigned int bytes)
 {
   assert(bytes == 4 || bytes == 5);
 
@@ -67,8 +67,8 @@ id3_length_t id3_render_syncsafe(id3_byte_t **ptr,
     case 5: *(*ptr)++ = (num >> 28) & 0x0f;
     case 4: *(*ptr)++ = (num >> 21) & 0x7f;
             *(*ptr)++ = (num >> 14) & 0x7f;
-	    *(*ptr)++ = (num >>  7) & 0x7f;
-	    *(*ptr)++ = (num >>  0) & 0x7f;
+      *(*ptr)++ = (num >>  7) & 0x7f;
+      *(*ptr)++ = (num >>  0) & 0x7f;
     }
   }
 
@@ -76,7 +76,7 @@ id3_length_t id3_render_syncsafe(id3_byte_t **ptr,
 }
 
 id3_length_t id3_render_int(id3_byte_t **ptr,
-			    signed long num, unsigned int bytes)
+          signed long num, unsigned int bytes)
 {
   assert(bytes >= 1 && bytes <= 4);
 
@@ -93,7 +93,7 @@ id3_length_t id3_render_int(id3_byte_t **ptr,
 }
 
 id3_length_t id3_render_binary(id3_byte_t **ptr,
-			       id3_byte_t const *data, id3_length_t length)
+             id3_byte_t const *data, id3_length_t length)
 {
   if (data == 0)
     return 0;
@@ -107,7 +107,7 @@ id3_length_t id3_render_binary(id3_byte_t **ptr,
 }
 
 id3_length_t id3_render_latin1(id3_byte_t **ptr,
-			       id3_latin1_t const *latin1, int terminate)
+             id3_latin1_t const *latin1, int terminate)
 {
   id3_length_t size;
 
@@ -127,8 +127,8 @@ id3_length_t id3_render_latin1(id3_byte_t **ptr,
 }
 
 id3_length_t id3_render_string(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
-			       enum id3_field_textencoding encoding,
-			       int terminate)
+             enum id3_field_textencoding encoding,
+             int terminate)
 {
   enum id3_utf16_byteorder byteorder = ID3_UTF16_BYTEORDER_ANY;
 
@@ -152,7 +152,7 @@ id3_length_t id3_render_string(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
 }
 
 id3_length_t id3_render_padding(id3_byte_t **ptr, id3_byte_t value,
-				id3_length_t length)
+        id3_length_t length)
 {
   if (ptr) {
     memset(*ptr, value, length);
@@ -167,7 +167,7 @@ id3_length_t id3_render_padding(id3_byte_t **ptr, id3_byte_t value,
  * DESCRIPTION:	render a space-padded string using latin1 encoding
  */
 id3_length_t id3_render_paddedstring(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
-				     id3_length_t length)
+             id3_length_t length)
 {
   id3_ucs4_t padded[31], *data, *end;
 

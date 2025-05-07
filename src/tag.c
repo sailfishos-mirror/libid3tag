@@ -214,7 +214,7 @@ int id3_tag_detachframe(struct id3_tag *tag, struct id3_frame *frame)
  * DESCRIPTION:	find in a tag the nth (0-based) frame with the given frame ID
  */
 struct id3_frame *id3_tag_findframe(struct id3_tag const *tag,
-				    char const *id, unsigned int index)
+            char const *id, unsigned int index)
 {
   unsigned int len, i;
 
@@ -269,7 +269,7 @@ enum tagtype tagtype(id3_byte_t const *data, id3_length_t length)
 
 static
 void parse_header(id3_byte_t const **ptr,
-		  unsigned int *version, int *flags, id3_length_t *size)
+      unsigned int *version, int *flags, id3_length_t *size)
 {
   *ptr += 3;
 
@@ -327,7 +327,7 @@ void trim(char *str)
 
 static
 int v1_attachstr(struct id3_tag *tag, char const *id,
-		 char *text, unsigned long number)
+     char *text, unsigned long number)
 {
   struct id3_frame *frame;
   id3_ucs4_t ucs4[31];
@@ -343,7 +343,7 @@ int v1_attachstr(struct id3_tag *tag, char const *id,
     return -1;
 
   if (id3_field_settextencoding(&frame->fields[0],
-				ID3_FIELD_TEXTENCODING_ISO_8859_1) == -1)
+        ID3_FIELD_TEXTENCODING_ISO_8859_1) == -1)
     goto fail;
 
   if (text)
@@ -353,8 +353,8 @@ int v1_attachstr(struct id3_tag *tag, char const *id,
 
   if (strcmp(id, ID3_FRAME_COMMENT) == 0) {
     if (id3_field_setlanguage(&frame->fields[1], "XXX") == -1 ||
-	id3_field_setstring(&frame->fields[2], id3_ucs4_empty) == -1 ||
-	id3_field_setfullstring(&frame->fields[3], ucs4) == -1)
+        id3_field_setstring(&frame->fields[2], id3_ucs4_empty) == -1 ||
+        id3_field_setfullstring(&frame->fields[3], ucs4) == -1)
       goto fail;
   }
   else {
@@ -412,12 +412,12 @@ struct id3_tag *v1_parse(id3_byte_t const *data)
     /* populate tag frames */
 
     if (v1_attachstr(tag, ID3_FRAME_TITLE,  title,  0) == -1 ||
-	v1_attachstr(tag, ID3_FRAME_ARTIST, artist, 0) == -1 ||
-	v1_attachstr(tag, ID3_FRAME_ALBUM,  album,  0) == -1 ||
-	v1_attachstr(tag, ID3_FRAME_YEAR,   year,   0) == -1 ||
-	(track        && v1_attachstr(tag, ID3_FRAME_TRACK, 0, track) == -1) ||
-	(genre < 0xff && v1_attachstr(tag, ID3_FRAME_GENRE, 0, genre) == -1) ||
-	v1_attachstr(tag, ID3_FRAME_COMMENT, comment, 0) == -1) {
+        v1_attachstr(tag, ID3_FRAME_ARTIST, artist, 0) == -1 ||
+        v1_attachstr(tag, ID3_FRAME_ALBUM,  album,  0) == -1 ||
+        v1_attachstr(tag, ID3_FRAME_YEAR,   year,   0) == -1 ||
+        (track        && v1_attachstr(tag, ID3_FRAME_TRACK, 0, track) == -1) ||
+        (genre < 0xff && v1_attachstr(tag, ID3_FRAME_GENRE, 0, genre) == -1) ||
+        v1_attachstr(tag, ID3_FRAME_COMMENT, comment, 0) == -1) {
       id3_tag_delete(tag);
       tag = 0;
     }
@@ -442,10 +442,10 @@ struct id3_tag *v2_parse(id3_byte_t const *ptr)
     tag->paddedsize = 10 + size;
 
     if ((tag->flags & ID3_TAG_FLAG_UNSYNCHRONISATION) &&
-	ID3_TAG_VERSION_MAJOR(tag->version) < 4) {
+        ID3_TAG_VERSION_MAJOR(tag->version) < 4) {
       mem = malloc(size);
       if (mem == 0)
-	goto fail;
+        goto fail;
 
       memcpy(mem, ptr, size);
 
@@ -458,137 +458,136 @@ struct id3_tag *v2_parse(id3_byte_t const *ptr)
     if (tag->flags & ID3_TAG_FLAG_EXTENDEDHEADER) {
       switch (ID3_TAG_VERSION_MAJOR(tag->version)) {
       case 2:
-	goto fail;
+        goto fail;
 
       case 3:
-	{
-	  id3_byte_t const *ehptr, *ehend;
-	  id3_length_t ehsize;
+      {
+        id3_byte_t const *ehptr, *ehend;
+        id3_length_t ehsize;
 
-	  enum {
-	    EH_FLAG_CRC = 0x8000  /* CRC data present */
-	  };
+        enum {
+          EH_FLAG_CRC = 0x8000  /* CRC data present */
+        };
 
-	  if (end - ptr < 4)
-	    goto fail;
+        if (end - ptr < 4)
+          goto fail;
 
-	  ehsize = id3_parse_uint(&ptr, 4);
+        ehsize = id3_parse_uint(&ptr, 4);
 
-	  if (ehsize > end - ptr)
-	    goto fail;
+        if (ehsize > end - ptr)
+          goto fail;
 
-	  ehptr = ptr;
-	  ehend = ptr + ehsize;
+        ehptr = ptr;
+        ehend = ptr + ehsize;
 
-	  ptr = ehend;
+        ptr = ehend;
 
-	  if (ehend - ehptr >= 6) {
-	    int ehflags;
-	    id3_length_t padsize;
+        if (ehend - ehptr >= 6) {
+          int ehflags;
+          id3_length_t padsize;
 
-	    ehflags = id3_parse_uint(&ehptr, 2);
-	    padsize = id3_parse_uint(&ehptr, 4);
+          ehflags = id3_parse_uint(&ehptr, 2);
+          padsize = id3_parse_uint(&ehptr, 4);
 
-	    if (padsize > end - ptr)
-	      goto fail;
+          if (padsize > end - ptr)
+            goto fail;
 
-	    end -= padsize;
+          end -= padsize;
 
-	    if (ehflags & EH_FLAG_CRC) {
-	      unsigned long crc;
+          if (ehflags & EH_FLAG_CRC) {
+            unsigned long crc;
 
-	      if (ehend - ehptr < 4)
-		goto fail;
+            if (ehend - ehptr < 4)
+              goto fail;
 
-	      crc = id3_parse_uint(&ehptr, 4);
+            crc = id3_parse_uint(&ehptr, 4);
 
-	      if (crc != id3_crc_compute(ptr, end - ptr))
-		goto fail;
+            if (crc != id3_crc_compute(ptr, end - ptr))
+              goto fail;
 
-	      tag->extendedflags |= ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT;
-	    }
-	  }
-	}
-	break;
+            tag->extendedflags |= ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT;
+          }
+        }
+      }
+      break;
 
       case 4:
-	{
-	  id3_byte_t const *ehptr, *ehend;
-	  id3_length_t ehsize;
-	  unsigned int bytes;
+      {
+        id3_byte_t const *ehptr, *ehend;
+        id3_length_t ehsize;
+        unsigned int bytes;
 
-	  if (end - ptr < 4)
-	    goto fail;
+        if (end - ptr < 4)
+          goto fail;
 
-	  ehptr  = ptr;
-	  ehsize = id3_parse_syncsafe(&ptr, 4);
+        ehptr  = ptr;
+        ehsize = id3_parse_syncsafe(&ptr, 4);
 
-	  if (ehsize < 6 || ehsize > end - ehptr)
-	    goto fail;
+        if (ehsize < 6 || ehsize > end - ehptr)
+          goto fail;
 
-	  ehend = ehptr + ehsize;
+        ehend = ehptr + ehsize;
 
-	  bytes = id3_parse_uint(&ptr, 1);
+        bytes = id3_parse_uint(&ptr, 1);
 
-	  if (bytes < 1 || bytes > ehend - ptr)
-	    goto fail;
+        if (bytes < 1 || bytes > ehend - ptr)
+          goto fail;
 
-	  ehptr = ptr + bytes;
+        ehptr = ptr + bytes;
 
-	  /* verify extended header size */
-	  {
-	    id3_byte_t const *flagsptr = ptr, *dataptr = ehptr;
-	    unsigned int datalen;
-	    int ehflags;
+        /* verify extended header size */
+        {
+          id3_byte_t const *flagsptr = ptr, *dataptr = ehptr;
+          unsigned int datalen;
+          int ehflags;
 
-	    while (bytes--) {
-	      for (ehflags = id3_parse_uint(&flagsptr, 1); ehflags;
-		   ehflags = (ehflags << 1) & 0xff) {
-		if (ehflags & 0x80) {
-		  if (dataptr == ehend)
-		    goto fail;
-		  datalen = id3_parse_uint(&dataptr, 1);
-		  if (datalen > 0x7f || datalen > ehend - dataptr)
-		    goto fail;
-		  dataptr += datalen;
-		}
-	      }
-	    }
-	  }
+          while (bytes--) {
+            for (ehflags = id3_parse_uint(&flagsptr, 1); ehflags; ehflags = (ehflags << 1) & 0xff) {
+              if (ehflags & 0x80) {
+                if (dataptr == ehend)
+                  goto fail;
+                datalen = id3_parse_uint(&dataptr, 1);
+                if (datalen > 0x7f || datalen > ehend - dataptr)
+                  goto fail;
+                dataptr += datalen;
+              }
+            }
+          }
+        }
 
-	  tag->extendedflags = id3_parse_uint(&ptr, 1);
+        tag->extendedflags = id3_parse_uint(&ptr, 1);
 
-	  ptr = ehend;
+        ptr = ehend;
 
-	  if (tag->extendedflags & ID3_TAG_EXTENDEDFLAG_TAGISANUPDATE) {
-	    bytes  = id3_parse_uint(&ehptr, 1);
-	    ehptr += bytes;
-	  }
+        if (tag->extendedflags & ID3_TAG_EXTENDEDFLAG_TAGISANUPDATE) {
+          bytes  = id3_parse_uint(&ehptr, 1);
+          ehptr += bytes;
+        }
 
-	  if (tag->extendedflags & ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT) {
-	    unsigned long crc;
+        if (tag->extendedflags & ID3_TAG_EXTENDEDFLAG_CRCDATAPRESENT) {
+          unsigned long crc;
 
-	    bytes = id3_parse_uint(&ehptr, 1);
-	    if (bytes < 5)
-	      goto fail;
+          bytes = id3_parse_uint(&ehptr, 1);
+          if (bytes < 5)
+            goto fail;
 
-	    crc = id3_parse_syncsafe(&ehptr, 5);
-	    ehptr += bytes - 5;
+          crc = id3_parse_syncsafe(&ehptr, 5);
+          ehptr += bytes - 5;
 
-	    if (crc != id3_crc_compute(ptr, end - ptr))
-	      goto fail;
-	  }
+          if (crc != id3_crc_compute(ptr, end - ptr))
+            goto fail;
+        }
 
-	  if (tag->extendedflags & ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS) {
-	    bytes = id3_parse_uint(&ehptr, 1);
-	    if (bytes < 1)
-	      goto fail;
+        if (tag->extendedflags & ID3_TAG_EXTENDEDFLAG_TAGRESTRICTIONS) {
+          bytes = id3_parse_uint(&ehptr, 1);
+          if (bytes < 1)
+            goto fail;
 
-	    tag->restrictions = id3_parse_uint(&ehptr, 1);
-	    ehptr += bytes - 1;
-	  }
-	}
-	break;
+          tag->restrictions = id3_parse_uint(&ehptr, 1);
+          ehptr += bytes - 1;
+        }
+      }
+      break;
       }
     }
 
@@ -598,15 +597,14 @@ struct id3_tag *v2_parse(id3_byte_t const *ptr)
       struct id3_frame *frame;
 
       if (*ptr == 0)
-	break;  /* padding */
+        break;  /* padding */
 
       frame = id3_frame_parse(&ptr, end - ptr, tag->version);
       if (frame == 0 || id3_tag_attachframe(tag, frame) == -1)
-	goto fail;
+        goto fail;
     }
 
-    if (ID3_TAG_VERSION_MAJOR(tag->version) < 4 &&
-	id3_compat_fixup(tag) == -1)
+    if (ID3_TAG_VERSION_MAJOR(tag->version) < 4 && id3_compat_fixup(tag) == -1)
       goto fail;
   }
 
@@ -666,7 +664,7 @@ struct id3_tag *id3_tag_parse(id3_byte_t const *data, id3_length_t length)
 
 static
 void v1_renderstr(struct id3_tag const *tag, char const *frameid,
-		  id3_byte_t **buffer, id3_length_t length)
+      id3_byte_t **buffer, id3_length_t length)
 {
   struct id3_frame *frame;
   id3_ucs4_t const *string;
@@ -733,7 +731,7 @@ id3_length_t v1_render(struct id3_tag const *tag, id3_byte_t *buffer)
     for (i = 0; i < nstrings; ++i) {
       genre = id3_genre_number(id3_field_getstrings(&frame->fields[1], i));
       if (genre != -1)
-	break;
+        break;
     }
 
     if (i == nstrings && nstrings > 0)
@@ -747,7 +745,7 @@ id3_length_t v1_render(struct id3_tag const *tag, id3_byte_t *buffer)
   if (genre == -1) {
     for (i = 3; i < 127; ++i) {
       if (data[i] != ' ')
-	break;
+        break;
     }
 
     if (i == 127)
@@ -848,7 +846,7 @@ id3_length_t id3_tag_render(struct id3_tag const *tag, id3_byte_t *buffer)
       ehsize += id3_render_int(ptr, 5, 1);
 
       if (ptr)
-	crc_ptr = *ptr;
+        crc_ptr = *ptr;
 
       ehsize += id3_render_syncsafe(ptr, 0, 5);
     }
@@ -879,10 +877,10 @@ id3_length_t id3_tag_render(struct id3_tag const *tag, id3_byte_t *buffer)
       size += id3_render_padding(ptr, 0, tag->paddedsize - size);
     else if (tag->options & ID3_TAG_OPTION_UNSYNCHRONISATION) {
       if (ptr == 0)
-	size += 1;
+        size += 1;
       else {
-	if ((*ptr)[-1] == 0xff)
-	  size += id3_render_padding(ptr, 0, 1);
+        if ((*ptr)[-1] == 0xff)
+          size += id3_render_padding(ptr, 0, 1);
       }
     }
   }
@@ -894,7 +892,7 @@ id3_length_t id3_tag_render(struct id3_tag const *tag, id3_byte_t *buffer)
 
   if (crc_ptr) {
     id3_render_syncsafe(&crc_ptr,
-			id3_crc_compute(frames_ptr, *ptr - frames_ptr), 5);
+      id3_crc_compute(frames_ptr, *ptr - frames_ptr), 5);
   }
 
   /* footer */

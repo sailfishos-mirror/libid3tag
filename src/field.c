@@ -167,7 +167,7 @@ enum id3_field_type id3_field_type(union id3_field const *field)
  * DESCRIPTION:	parse a field value
  */
 int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
-		    id3_length_t length, enum id3_field_textencoding *encoding)
+        id3_length_t length, enum id3_field_textencoding *encoding)
 {
   assert(field);
 
@@ -233,9 +233,9 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
       id3_latin1_t *latin1;
 
       latin1 = id3_parse_latin1(ptr, length,
-				field->type == ID3_FIELD_TYPE_LATIN1FULL);
+        field->type == ID3_FIELD_TYPE_LATIN1FULL);
       if (latin1 == 0)
-	goto fail;
+        goto fail;
 
       field->latin1.ptr = latin1;
     }
@@ -249,19 +249,19 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
       end = *ptr + length;
 
       while (end - *ptr > 0) {
-	latin1 = id3_parse_latin1(ptr, end - *ptr, 0);
-	if (latin1 == 0)
-	  goto fail;
+        latin1 = id3_parse_latin1(ptr, end - *ptr, 0);
+          if (latin1 == 0)
+            goto fail;
 
-	strings = realloc(field->latin1list.strings,
-			  (field->latin1list.nstrings + 1) * sizeof(*strings));
-	if (strings == 0) {
-	  free(latin1);
-	  goto fail;
-	}
+          strings = realloc(field->latin1list.strings,
+                (field->latin1list.nstrings + 1) * sizeof(*strings));
+          if (strings == 0) {
+            free(latin1);
+            goto fail;
+          }
 
-	field->latin1list.strings = strings;
-	field->latin1list.strings[field->latin1list.nstrings++] = latin1;
+          field->latin1list.strings = strings;
+          field->latin1list.strings[field->latin1list.nstrings++] = latin1;
       }
     }
     break;
@@ -272,9 +272,9 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
       id3_ucs4_t *ucs4;
 
       ucs4 = id3_parse_string(ptr, length, *encoding,
-			      field->type == ID3_FIELD_TYPE_STRINGFULL);
+            field->type == ID3_FIELD_TYPE_STRINGFULL);
       if (ucs4 == 0)
-	goto fail;
+        goto fail;
 
       field->string.ptr = ucs4;
     }
@@ -288,19 +288,19 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
       end = *ptr + length;
 
       while (end - *ptr > 0 && **ptr != '\0') {
-	ucs4 = id3_parse_string(ptr, end - *ptr, *encoding, 0);
-	if (ucs4 == 0)
-	  goto fail;
+        ucs4 = id3_parse_string(ptr, end - *ptr, *encoding, 0);
+        if (ucs4 == 0)
+          goto fail;
 
-	strings = realloc(field->stringlist.strings,
-			  (field->stringlist.nstrings + 1) * sizeof(*strings));
-	if (strings == 0) {
-	  free(ucs4);
-	  goto fail;
-	}
+        strings = realloc(field->stringlist.strings,
+              (field->stringlist.nstrings + 1) * sizeof(*strings));
+        if (strings == 0) {
+          free(ucs4);
+          goto fail;
+        }
 
-	field->stringlist.strings = strings;
-	field->stringlist.strings[field->stringlist.nstrings++] = ucs4;
+        field->stringlist.strings = strings;
+        field->stringlist.strings[field->stringlist.nstrings++] = ucs4;
       }
     }
     break;
@@ -312,7 +312,7 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
 
       data = id3_parse_binary(ptr, length);
       if (data == 0)
-	goto fail;
+        goto fail;
 
       field->binary.data   = data;
       field->binary.length = length;
@@ -331,8 +331,8 @@ int id3_field_parse(union id3_field *field, id3_byte_t const **ptr,
  * DESCRIPTION:	render a field value
  */
 id3_length_t id3_field_render(union id3_field const *field, id3_byte_t **ptr,
-			      enum id3_field_textencoding *encoding,
-			      int terminate)
+            enum id3_field_textencoding *encoding,
+            int terminate)
 {
   id3_length_t size;
   unsigned int i;
@@ -362,8 +362,8 @@ id3_length_t id3_field_render(union id3_field const *field, id3_byte_t **ptr,
     size = 0;
     for (i = 0; i < field->latin1list.nstrings; ++i) {
       size += id3_render_latin1(ptr, field->latin1list.strings[i],
-				(i < field->latin1list.nstrings - 1) ||
-				terminate);
+        (i < field->latin1list.nstrings - 1) ||
+        terminate);
     }
     return size;
 
@@ -375,8 +375,8 @@ id3_length_t id3_field_render(union id3_field const *field, id3_byte_t **ptr,
     size = 0;
     for (i = 0; i < field->stringlist.nstrings; ++i) {
       size += id3_render_string(ptr, field->stringlist.strings[i], *encoding,
-				(i < field->stringlist.nstrings - 1) ||
-				terminate);
+        (i < field->stringlist.nstrings - 1) ||
+        terminate);
     }
     return size;
 
@@ -442,7 +442,7 @@ int id3_field_setint(union id3_field *field, signed long number)
  * DESCRIPTION:	set the value of a textencoding field
  */
 int id3_field_settextencoding(union id3_field *field,
-			      enum id3_field_textencoding encoding)
+            enum id3_field_textencoding encoding)
 {
   assert(field);
 
@@ -492,7 +492,7 @@ int id3_field_setlatin1(union id3_field *field, id3_latin1_t const *latin1)
 
     for (ptr = latin1; *ptr; ++ptr) {
       if (*ptr == '\n')
-	return -1;
+        return -1;
     }
   }
 
@@ -551,7 +551,7 @@ int id3_field_setstring(union id3_field *field, id3_ucs4_t const *string)
 
     for (ptr = string; *ptr; ++ptr) {
       if (*ptr == '\n')
-	return -1;
+        return -1;
     }
   }
 
@@ -579,7 +579,7 @@ int id3_field_setfullstring(union id3_field *field, id3_ucs4_t const *string)
  * DESCRIPTION:	set the value of a stringlist field
  */
 int id3_field_setstrings(union id3_field *field,
-			 unsigned int length, id3_ucs4_t **ptrs)
+      unsigned int length, id3_ucs4_t **ptrs)
 {
   id3_ucs4_t **strings;
   unsigned int i;
@@ -602,7 +602,7 @@ int id3_field_setstrings(union id3_field *field,
     strings[i] = id3_ucs4_duplicate(ptrs[i]);
     if (strings[i] == 0) {
       while (i--)
-	free(strings[i]);
+        free(strings[i]);
 
       free(strings);
       return -1;
@@ -636,7 +636,7 @@ int id3_field_addstring(union id3_field *field, id3_ucs4_t const *string)
     return -1;
 
   strings = realloc(field->stringlist.strings,
-		    (field->stringlist.nstrings + 1) * sizeof(*strings));
+        (field->stringlist.nstrings + 1) * sizeof(*strings));
   if (strings == 0) {
     free(new);
     return -1;
@@ -699,7 +699,7 @@ int id3_field_setframeid(union id3_field *field, char const *id)
  * DESCRIPTION:	set the value of a binarydata field
  */
 int id3_field_setbinarydata(union id3_field *field,
-			    id3_byte_t const *data, id3_length_t length)
+          id3_byte_t const *data, id3_length_t length)
 {
   id3_byte_t *mem;
 
@@ -835,7 +835,7 @@ unsigned int id3_field_getnstrings(union id3_field const *field)
  * DESCRIPTION:	return one value of a stringlist field
  */
 id3_ucs4_t const *id3_field_getstrings(union id3_field const *field,
-				       unsigned int index)
+               unsigned int index)
 {
   id3_ucs4_t const *string;
 
@@ -869,7 +869,7 @@ char const *id3_field_getframeid(union id3_field const *field)
  * DESCRIPTION:	return the value of a binarydata field
  */
 id3_byte_t const *id3_field_getbinarydata(union id3_field const *field,
-					  id3_length_t *length)
+            id3_length_t *length)
 {
   static id3_byte_t const empty;
 

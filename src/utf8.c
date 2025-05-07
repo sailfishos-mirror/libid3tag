@@ -38,53 +38,51 @@ id3_length_t id3_utf8_length(id3_utf8_t const *utf8)
   while (*utf8) {
     if ((utf8[0] & 0x80) == 0x00)
       ++length;
-    else if ((utf8[0] & 0xe0) == 0xc0 &&
-	     (utf8[1] & 0xc0) == 0x80) {
+    else if ((utf8[0] & 0xe0) == 0xc0 && (utf8[1] & 0xc0) == 0x80) {
       if (((utf8[0] & 0x1fL) << 6) >= 0x00000080L) {
-	++length;
-	utf8 += 1;
+        ++length;
+        utf8 += 1;
       }
     }
     else if ((utf8[0] & 0xf0) == 0xe0 &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80) {
-      if ((((utf8[0] & 0x0fL) << 12) |
-	   ((utf8[1] & 0x3fL) <<  6)) >= 0x00000800L) {
-	++length;
-	utf8 += 2;
+       (utf8[1] & 0xc0) == 0x80 &&
+       (utf8[2] & 0xc0) == 0x80) {
+      if ((((utf8[0] & 0x0fL) << 12) | ((utf8[1] & 0x3fL) <<  6)) >= 0x00000800L) {
+        ++length;
+        utf8 += 2;
       }
     }
     else if ((utf8[0] & 0xf8) == 0xf0 &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80 &&
-	     (utf8[3] & 0xc0) == 0x80) {
+       (utf8[1] & 0xc0) == 0x80 &&
+       (utf8[2] & 0xc0) == 0x80 &&
+       (utf8[3] & 0xc0) == 0x80) {
       if ((((utf8[0] & 0x07L) << 18) |
-	   ((utf8[1] & 0x3fL) << 12)) >= 0x00010000L) {
-	++length;
-	utf8 += 3;
+          ((utf8[1] & 0x3fL) << 12)) >= 0x00010000L) {
+        ++length;
+        utf8 += 3;
       }
     }
     else if ((utf8[0] & 0xfc) == 0xf8 &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80 &&
-	     (utf8[3] & 0xc0) == 0x80 &&
-	     (utf8[4] & 0xc0) == 0x80) {
+        (utf8[1] & 0xc0) == 0x80 &&
+        (utf8[2] & 0xc0) == 0x80 &&
+        (utf8[3] & 0xc0) == 0x80 &&
+        (utf8[4] & 0xc0) == 0x80) {
       if ((((utf8[0] & 0x03L) << 24) |
-	   ((utf8[0] & 0x3fL) << 18)) >= 0x00200000L) {
-	++length;
-	utf8 += 4;
+          ((utf8[0] & 0x3fL) << 18)) >= 0x00200000L) {
+        ++length;
+        utf8 += 4;
       }
     }
     else if ((utf8[0] & 0xfe) == 0xfc &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80 &&
-	     (utf8[3] & 0xc0) == 0x80 &&
-	     (utf8[4] & 0xc0) == 0x80 &&
-	     (utf8[5] & 0xc0) == 0x80) {
+        (utf8[1] & 0xc0) == 0x80 &&
+        (utf8[2] & 0xc0) == 0x80 &&
+        (utf8[3] & 0xc0) == 0x80 &&
+        (utf8[4] & 0xc0) == 0x80 &&
+        (utf8[5] & 0xc0) == 0x80) {
       if ((((utf8[0] & 0x01L) << 30) |
-	   ((utf8[0] & 0x3fL) << 24)) >= 0x04000000L) {
-	++length;
-	utf8 += 5;
+          ((utf8[0] & 0x3fL) << 24)) >= 0x04000000L) {
+        ++length;
+        utf8 += 5;
       }
     }
 
@@ -136,65 +134,51 @@ id3_length_t id3_utf8_decodechar(id3_utf8_t const *utf8, id3_ucs4_t *ucs4)
       *ucs4 = utf8[0];
       return utf8 - start + 1;
     }
-    else if ((utf8[0] & 0xe0) == 0xc0 &&
-	     (utf8[1] & 0xc0) == 0x80) {
-      *ucs4 =
-	((utf8[0] & 0x1fL) << 6) |
-	((utf8[1] & 0x3fL) << 0);
+    else if ((utf8[0] & 0xe0) == 0xc0 && (utf8[1] & 0xc0) == 0x80) {
+      *ucs4 = ((utf8[0] & 0x1fL) << 6) | ((utf8[1] & 0x3fL) << 0);
       if (*ucs4 >= 0x00000080L)
-	return utf8 - start + 2;
+        return utf8 - start + 2;
     }
-    else if ((utf8[0] & 0xf0) == 0xe0 &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80) {
-      *ucs4 =
-	((utf8[0] & 0x0fL) << 12) |
-	((utf8[1] & 0x3fL) <<  6) |
-	((utf8[2] & 0x3fL) <<  0);
+    else if ((utf8[0] & 0xf0) == 0xe0 && (utf8[1] & 0xc0) == 0x80 &&
+             (utf8[2] & 0xc0) == 0x80) {
+      *ucs4 = ((utf8[0] & 0x0fL) << 12) |
+              ((utf8[1] & 0x3fL) <<  6) |
+              ((utf8[2] & 0x3fL) <<  0);
       if (*ucs4 >= 0x00000800L)
-	return utf8 - start + 3;
+        return utf8 - start + 3;
     }
-    else if ((utf8[0] & 0xf8) == 0xf0 &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80 &&
-	     (utf8[3] & 0xc0) == 0x80) {
-      *ucs4 =
-	((utf8[0] & 0x07L) << 18) |
-	((utf8[1] & 0x3fL) << 12) |
-	((utf8[2] & 0x3fL) <<  6) |
-	((utf8[3] & 0x3fL) <<  0);
+    else if ((utf8[0] & 0xf8) == 0xf0 && (utf8[1] & 0xc0) == 0x80 &&
+             (utf8[2] & 0xc0) == 0x80 && (utf8[3] & 0xc0) == 0x80) {
+      *ucs4 = ((utf8[0] & 0x07L) << 18) |
+              ((utf8[1] & 0x3fL) << 12) |
+              ((utf8[2] & 0x3fL) <<  6) |
+              ((utf8[3] & 0x3fL) <<  0);
       if (*ucs4 >= 0x00010000L)
-	return utf8 - start + 4;
+        return utf8 - start + 4;
     }
-    else if ((utf8[0] & 0xfc) == 0xf8 &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80 &&
-	     (utf8[3] & 0xc0) == 0x80 &&
-	     (utf8[4] & 0xc0) == 0x80) {
-      *ucs4 =
-	((utf8[0] & 0x03L) << 24) |
-	((utf8[1] & 0x3fL) << 18) |
-	((utf8[2] & 0x3fL) << 12) |
-	((utf8[3] & 0x3fL) <<  6) |
-	((utf8[4] & 0x3fL) <<  0);
+    else if ((utf8[0] & 0xfc) == 0xf8 && (utf8[1] & 0xc0) == 0x80 &&
+             (utf8[2] & 0xc0) == 0x80 && (utf8[3] & 0xc0) == 0x80 &&
+             (utf8[4] & 0xc0) == 0x80) {
+      *ucs4 = ((utf8[0] & 0x03L) << 24) |
+              ((utf8[1] & 0x3fL) << 18) |
+              ((utf8[2] & 0x3fL) << 12) |
+              ((utf8[3] & 0x3fL) <<  6) |
+              ((utf8[4] & 0x3fL) <<  0);
       if (*ucs4 >= 0x00200000L)
-	return utf8 - start + 5;
+        return utf8 - start + 5;
     }
     else if ((utf8[0] & 0xfe) == 0xfc &&
-	     (utf8[1] & 0xc0) == 0x80 &&
-	     (utf8[2] & 0xc0) == 0x80 &&
-	     (utf8[3] & 0xc0) == 0x80 &&
-	     (utf8[4] & 0xc0) == 0x80 &&
-	     (utf8[5] & 0xc0) == 0x80) {
-      *ucs4 =
-	((utf8[0] & 0x01L) << 30) |
-	((utf8[1] & 0x3fL) << 24) |
-	((utf8[2] & 0x3fL) << 18) |
-	((utf8[3] & 0x3fL) << 12) |
-	((utf8[4] & 0x3fL) <<  6) |
-	((utf8[5] & 0x3fL) <<  0);
+       (utf8[1] & 0xc0) == 0x80 && (utf8[2] & 0xc0) == 0x80 &&
+       (utf8[3] & 0xc0) == 0x80 && (utf8[4] & 0xc0) == 0x80 &&
+       (utf8[5] & 0xc0) == 0x80) {
+      *ucs4 = ((utf8[0] & 0x01L) << 30) |
+              ((utf8[1] & 0x3fL) << 24) |
+              ((utf8[2] & 0x3fL) << 18) |
+              ((utf8[3] & 0x3fL) << 12) |
+              ((utf8[4] & 0x3fL) <<  6) |
+              ((utf8[5] & 0x3fL) <<  0);
       if (*ucs4 >= 0x04000000L)
-	return utf8 - start + 6;
+        return utf8 - start + 6;
     }
 
     ++utf8;
@@ -306,7 +290,7 @@ id3_utf8_t id3_utf8_get(id3_byte_t const **ptr)
  * DESCRIPTION:	serialize a ucs4 string using utf8 encoding
  */
 id3_length_t id3_utf8_serialize(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
-				int terminate)
+        int terminate)
 {
   id3_length_t size = 0;
   id3_utf8_t utf8[6], *out;

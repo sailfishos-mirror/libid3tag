@@ -60,7 +60,7 @@ void check(void)
     }
 
     fprintf(stderr, "%s:%u: leaked %lu bytes\n",
-	    debug->file, debug->line, debug->size);
+      debug->file, debug->line, debug->size);
   }
 }
 
@@ -100,7 +100,7 @@ void *id3_debug_malloc(size_t size, char const *file, unsigned int line)
 }
 
 void *id3_debug_calloc(size_t nmemb, size_t size,
-		       char const *file, unsigned int line)
+           char const *file, unsigned int line)
 {
   void *ptr;
 
@@ -112,7 +112,7 @@ void *id3_debug_calloc(size_t nmemb, size_t size,
 }
 
 void *id3_debug_realloc(void *ptr, size_t size,
-			char const *file, unsigned int line)
+      char const *file, unsigned int line)
 {
   struct debug *debug, *new;
 
@@ -129,7 +129,7 @@ void *id3_debug_realloc(void *ptr, size_t size,
 
   if (debug->magic != DEBUG_MAGIC) {
     fprintf(stderr, "%s:%u: realloc(%p, %lu) memory not allocated\n",
-	    file, line, ptr, size);
+      file, line, ptr, size);
     return 0;
   }
 
@@ -198,7 +198,7 @@ void *id3_debug_release(void *ptr, char const *file, unsigned int line)
 
   if (debug->magic != DEBUG_MAGIC) {
     fprintf(stderr, "%s:%u: release(%p) memory not allocated\n",
-	    file, line, ptr);
+      file, line, ptr);
     return ptr;
   }
 

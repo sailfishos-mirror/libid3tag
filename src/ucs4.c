@@ -37,8 +37,8 @@ id3_ucs4_t const id3_ucs4_empty[] = { 0 };
  */
 id3_length_t id3_ucs4_length(id3_ucs4_t const *ucs4)
 {
-	if (!ucs4)
-		return 0;
+  if (!ucs4)
+    return 0;
 
   id3_ucs4_t const *ptr = ucs4;
 
@@ -76,8 +76,7 @@ id3_length_t id3_ucs4_utf16size(id3_ucs4_t const *ucs4)
 
   while (*ucs4) {
     ++size;
-    if (*ucs4 >= 0x00010000L &&
-	*ucs4 <= 0x0010ffffL)
+    if (*ucs4 >= 0x00010000L && *ucs4 <= 0x0010ffffL)
       ++size;
 
     ++ucs4;

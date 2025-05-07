@@ -53,8 +53,8 @@ id3_length_t id3_util_unsynchronise(id3_byte_t *data, id3_length_t length)
 
     for (count = bytes; count; *--end = *--ptr) {
       if (ptr[-1] == 0xff && (ptr[0] == 0x00 || (ptr[0] & 0xe0) == 0xe0)) {
-	*--end = 0x00;
-	--count;
+        *--end = 0x00;
+        --count;
       }
     }
   }
@@ -90,7 +90,7 @@ id3_length_t id3_util_deunsynchronise(id3_byte_t *data, id3_length_t length)
  * DESCRIPTION:	perform zlib deflate method compression
  */
 id3_byte_t *id3_util_compress(id3_byte_t const *data, id3_length_t length,
-			      id3_length_t *newlength)
+            id3_length_t *newlength)
 {
   id3_byte_t *compressed;
 
@@ -100,8 +100,7 @@ id3_byte_t *id3_util_compress(id3_byte_t const *data, id3_length_t length,
   compressed = malloc(*newlength);
   if (compressed) {
     if (compress2(compressed, newlength, data, length,
-		  Z_BEST_COMPRESSION) != Z_OK ||
-	*newlength >= length) {
+        Z_BEST_COMPRESSION) != Z_OK || *newlength >= length) {
       free(compressed);
       compressed = 0;
     }
@@ -110,7 +109,7 @@ id3_byte_t *id3_util_compress(id3_byte_t const *data, id3_length_t length,
 
       resized = realloc(compressed, *newlength ? *newlength : 1);
       if (resized)
-	compressed = resized;
+        compressed = resized;
     }
   }
 
@@ -122,7 +121,7 @@ id3_byte_t *id3_util_compress(id3_byte_t const *data, id3_length_t length,
  * DESCRIPTION:	undo zlib deflate method compression
  */
 id3_byte_t *id3_util_decompress(id3_byte_t const *data, id3_length_t length,
-				id3_length_t newlength)
+        id3_length_t newlength)
 {
   id3_byte_t *decompressed;
 
@@ -133,7 +132,7 @@ id3_byte_t *id3_util_decompress(id3_byte_t const *data, id3_length_t length,
     size = newlength;
 
     if (uncompress(decompressed, &size, data, length) != Z_OK ||
-	size != newlength) {
+        size != newlength) {
       free(decompressed);
       decompressed = 0;
     }

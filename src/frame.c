@@ -89,7 +89,7 @@ struct id3_frame *id3_frame_new(char const *id)
     default:
       frametype = &id3_frametype_unknown;
       if (id3_compat_lookup((char const *) id, 4))
-	frametype = &id3_frametype_obsolete;
+        frametype = &id3_frametype_obsolete;
       break;
     }
   }
@@ -164,7 +164,7 @@ void id3_frame_delref(struct id3_frame *frame)
  * DESCRIPTION:	return a pointer to a field in a frame
  */
 union id3_field *id3_frame_field(struct id3_frame const *frame,
-				 unsigned int index)
+         unsigned int index)
 {
   assert(frame);
 
@@ -173,14 +173,14 @@ union id3_field *id3_frame_field(struct id3_frame const *frame,
 
 static
 struct id3_frame *obsolete(char const *id, id3_byte_t const *data,
-			   id3_length_t length)
+         id3_length_t length)
 {
   struct id3_frame *frame;
 
   frame = id3_frame_new(ID3_FRAME_OBSOLETE);
   if (frame) {
     if (id3_field_setframeid(&frame->fields[0], id) == -1 ||
-	id3_field_setbinarydata(&frame->fields[1], data, length) == -1)
+        id3_field_setbinarydata(&frame->fields[1], data, length) == -1)
       goto fail;
   }
 
@@ -197,9 +197,9 @@ struct id3_frame *obsolete(char const *id, id3_byte_t const *data,
 
 static
 struct id3_frame *unparseable(char const *id, id3_byte_t const **ptr,
-			      id3_length_t length, int flags,
-			      int group_id, int encryption_method,
-			      id3_length_t decoded_length)
+            id3_length_t length, int flags,
+            int group_id, int encryption_method,
+            id3_length_t decoded_length)
 {
   struct id3_frame *frame = 0;
   id3_byte_t *mem;
@@ -234,7 +234,7 @@ struct id3_frame *unparseable(char const *id, id3_byte_t const **ptr,
 
 static
 int parse_data(struct id3_frame *frame,
-	       id3_byte_t const *data, id3_length_t length)
+         id3_byte_t const *data, id3_length_t length)
 {
   enum id3_field_textencoding encoding;
   id3_byte_t const *end;
@@ -257,7 +257,7 @@ int parse_data(struct id3_frame *frame,
  * DESCRIPTION:	parse raw frame data according to the specified ID3 tag version
  */
 struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
-				  unsigned int version)
+          unsigned int version)
 {
   struct id3_frame *frame = 0;
   id3_byte_t const *id, *end, *data;
@@ -274,7 +274,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
     switch (ID3_TAG_VERSION_MAJOR(version)) {
     case 2:
       if (length < 6)
-	goto fail;
+        goto fail;
 
       compat = id3_compat_lookup((char const *) id, 3);
 
@@ -282,7 +282,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
       size  = id3_parse_uint(ptr, 3);
 
       if (size > end - *ptr)
-	goto fail;
+        goto fail;
 
       end = *ptr + size;
 
@@ -290,7 +290,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
 
     case 3:
       if (length < 10)
-	goto fail;
+        goto fail;
 
       compat = id3_compat_lookup((char const *) id, 4);
 
@@ -299,40 +299,40 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
       flags = id3_parse_uint(ptr, 2);
 
       if (size > end - *ptr)
-	goto fail;
+        goto fail;
 
       end = *ptr + size;
 
       if (flags & (ID3_FRAME_FLAG_FORMATFLAGS & ~0x00e0)) {
-	frame = unparseable((char const *) id, ptr, end - *ptr, 0, 0, 0, 0);
-	goto done;
+        frame = unparseable((char const *) id, ptr, end - *ptr, 0, 0, 0, 0);
+        goto done;
       }
 
       flags =
-	((flags >> 1) & ID3_FRAME_FLAG_STATUSFLAGS) |
-	((flags >> 4) & (ID3_FRAME_FLAG_COMPRESSION |
-			 ID3_FRAME_FLAG_ENCRYPTION)) |
-	((flags << 1) & ID3_FRAME_FLAG_GROUPINGIDENTITY);
+        ((flags >> 1) & ID3_FRAME_FLAG_STATUSFLAGS) |
+        ((flags >> 4) & (ID3_FRAME_FLAG_COMPRESSION |
+            ID3_FRAME_FLAG_ENCRYPTION)) |
+        ((flags << 1) & ID3_FRAME_FLAG_GROUPINGIDENTITY);
 
       if (flags & ID3_FRAME_FLAG_COMPRESSION) {
-	if (end - *ptr < 4)
-	  goto fail;
+        if (end - *ptr < 4)
+          goto fail;
 
-	decoded_length = id3_parse_uint(ptr, 4);
+        decoded_length = id3_parse_uint(ptr, 4);
       }
 
       if (flags & ID3_FRAME_FLAG_ENCRYPTION) {
-	if (end - *ptr < 1)
-	  goto fail;
+        if (end - *ptr < 1)
+          goto fail;
 
-	encryption_method = id3_parse_uint(ptr, 1);
+        encryption_method = id3_parse_uint(ptr, 1);
       }
 
       if (flags & ID3_FRAME_FLAG_GROUPINGIDENTITY) {
-	if (end - *ptr < 1)
-	  goto fail;
+        if (end - *ptr < 1)
+          goto fail;
 
-	group_id = id3_parse_uint(ptr, 1);
+        group_id = id3_parse_uint(ptr, 1);
       }
 
       break;
@@ -353,9 +353,8 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
 
       id = (id3_byte_t const *) xid;
 
-      flags |=
-	ID3_FRAME_FLAG_TAGALTERPRESERVATION |
-	ID3_FRAME_FLAG_FILEALTERPRESERVATION;
+      flags |= ID3_FRAME_FLAG_TAGALTERPRESERVATION |
+               ID3_FRAME_FLAG_FILEALTERPRESERVATION;
     }
   }
   else {  /* ID3v2.4 */
@@ -378,25 +377,24 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
 
     if (flags & ID3_FRAME_FLAG_GROUPINGIDENTITY) {
       if (end - *ptr < 1)
-	goto fail;
+        goto fail;
 
       group_id = id3_parse_uint(ptr, 1);
     }
 
-    if ((flags & ID3_FRAME_FLAG_COMPRESSION) &&
-	!(flags & ID3_FRAME_FLAG_DATALENGTHINDICATOR))
+    if ((flags & ID3_FRAME_FLAG_COMPRESSION) && !(flags & ID3_FRAME_FLAG_DATALENGTHINDICATOR))
       goto fail;
 
     if (flags & ID3_FRAME_FLAG_ENCRYPTION) {
       if (end - *ptr < 1)
-	goto fail;
+        goto fail;
 
       encryption_method = id3_parse_uint(ptr, 1);
     }
 
     if (flags & ID3_FRAME_FLAG_DATALENGTHINDICATOR) {
       if (end - *ptr < 4)
-	goto fail;
+        goto fail;
 
       decoded_length = id3_parse_syncsafe(ptr, 4);
     }
@@ -420,7 +418,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
 
   if (flags & ID3_FRAME_FLAG_ENCRYPTION) {
     frame = unparseable((char const *) id, &data, end - data, flags,
-			group_id, encryption_method, decoded_length);
+      group_id, encryption_method, decoded_length);
     goto done;
   }
 
@@ -454,11 +452,11 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
 
     if (compat && compat->translate) {
       if (compat->translate(frame, compat->id, data, end - data) == -1)
-	goto fail;
+        goto fail;
     }
     else {
       if (parse_data(frame, data, end - data) == -1)
-	goto fail;
+        goto fail;
     }
   }
 
@@ -479,7 +477,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
 
 static
 id3_length_t render_data(id3_byte_t **ptr,
-			 union id3_field *fields, unsigned int length)
+       union id3_field *fields, unsigned int length)
 {
   id3_length_t size = 0;
   enum id3_field_textencoding encoding;
@@ -498,7 +496,7 @@ id3_length_t render_data(id3_byte_t **ptr,
  * DESCRIPTION:	render a single, complete frame
  */
 id3_length_t id3_frame_render(struct id3_frame const *frame,
-			      id3_byte_t **ptr, int options)
+            id3_byte_t **ptr, int options)
 {
   id3_length_t size = 0, decoded_length, datalen;
   id3_byte_t *size_ptr = 0, *flags_ptr = 0, *data = 0;
@@ -575,18 +573,18 @@ id3_length_t id3_frame_render(struct id3_frame const *frame,
       datalen = render_data(ptr, frame->fields, frame->nfields);
 
       if (flags & ID3_FRAME_FLAG_COMPRESSION) {
-	id3_byte_t *comp;
-	id3_length_t complen;
+        id3_byte_t *comp;
+        id3_length_t complen;
 
-	comp = id3_util_compress(data, datalen, &complen);
-	if (comp == 0)
-	  flags &= ~ID3_FRAME_FLAG_COMPRESSION;
-	else {
-	  *ptr = data;
-	  datalen = id3_render_binary(ptr, comp, complen);
+        comp = id3_util_compress(data, datalen, &complen);
+        if (comp == 0)
+          flags &= ~ID3_FRAME_FLAG_COMPRESSION;
+        else {
+          *ptr = data;
+          datalen = id3_render_binary(ptr, comp, complen);
 
-	  free(comp);
-	}
+          free(comp);
+        }
       }
     }
   }
@@ -601,10 +599,10 @@ id3_length_t id3_frame_render(struct id3_frame const *frame,
 
       newlen = id3_util_unsynchronise(data, datalen);
       if (newlen == datalen)
-	flags &= ~ID3_FRAME_FLAG_UNSYNCHRONISATION;
+        flags &= ~ID3_FRAME_FLAG_UNSYNCHRONISATION;
       else {
-	*ptr   += newlen - datalen;
-	datalen = newlen;
+        *ptr   += newlen - datalen;
+        datalen = newlen;
       }
     }
   }

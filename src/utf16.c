@@ -39,7 +39,7 @@ id3_length_t id3_utf16_length(id3_utf16_t const *utf16)
     if (utf16[0] < 0xd800 || utf16[0] > 0xdfff)
       ++length;
     else if (utf16[0] >= 0xd800 && utf16[0] <= 0xdbff &&
-	     utf16[1] >= 0xdc00 && utf16[1] <= 0xdfff) {
+        utf16[1] >= 0xdc00 && utf16[1] <= 0xdfff) {
       ++length;
       ++utf16;
     }
@@ -93,9 +93,9 @@ id3_length_t id3_utf16_decodechar(id3_utf16_t const *utf16, id3_ucs4_t *ucs4)
       return utf16 - start + 1;
     }
     else if (utf16[0] >= 0xd800 && utf16[0] <= 0xdbff &&
-	     utf16[1] >= 0xdc00 && utf16[1] <= 0xdfff) {
+             utf16[1] >= 0xdc00 && utf16[1] <= 0xdfff) {
       *ucs4 = (((utf16[0] & 0x03ffL) << 10) |
-	       ((utf16[1] & 0x03ffL) <<  0)) + 0x00010000L;
+         ((utf16[1] & 0x03ffL) <<  0)) + 0x00010000L;
       return utf16 - start + 2;
     }
 
@@ -155,7 +155,7 @@ void id3_utf16_encode(id3_utf16_t *utf16, id3_ucs4_t const *ucs4)
  * DESCRIPTION:	serialize a single utf16 character
  */
 id3_length_t id3_utf16_put(id3_byte_t **ptr, id3_utf16_t utf16,
-			   enum id3_utf16_byteorder byteorder)
+         enum id3_utf16_byteorder byteorder)
 {
   if (ptr) {
     switch (byteorder) {
@@ -182,7 +182,7 @@ id3_length_t id3_utf16_put(id3_byte_t **ptr, id3_utf16_t utf16,
  * DESCRIPTION:	deserialize a single utf16 character
  */
 id3_utf16_t id3_utf16_get(id3_byte_t const **ptr,
-			  enum id3_utf16_byteorder byteorder)
+        enum id3_utf16_byteorder byteorder)
 {
   id3_utf16_t utf16;
 
@@ -211,8 +211,8 @@ id3_utf16_t id3_utf16_get(id3_byte_t const **ptr,
  * DESCRIPTION:	serialize a ucs4 string using utf16 encoding
  */
 id3_length_t id3_utf16_serialize(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
-				 enum id3_utf16_byteorder byteorder,
-				 int terminate)
+         enum id3_utf16_byteorder byteorder,
+         int terminate)
 {
   id3_length_t size = 0;
   id3_utf16_t utf16[2], *out;
@@ -239,7 +239,7 @@ id3_length_t id3_utf16_serialize(id3_byte_t **ptr, id3_ucs4_t const *ucs4,
  * DESCRIPTION:	deserialize a ucs4 string using utf16 encoding
  */
 id3_ucs4_t *id3_utf16_deserialize(id3_byte_t const **ptr, id3_length_t length,
-				  enum id3_utf16_byteorder byteorder)
+          enum id3_utf16_byteorder byteorder)
 {
   id3_byte_t const *end;
   id3_utf16_t *utf16ptr, *utf16;
@@ -254,8 +254,7 @@ id3_ucs4_t *id3_utf16_deserialize(id3_byte_t const **ptr, id3_length_t length,
     return 0;
 
   if (byteorder == ID3_UTF16_BYTEORDER_ANY && end - *ptr > 0) {
-    switch (((*ptr)[0] << 8) |
-	    ((*ptr)[1] << 0)) {
+    switch (((*ptr)[0] << 8) | ((*ptr)[1] << 0)) {
     case 0xfeff:
       byteorder = ID3_UTF16_BYTEORDER_BE;
       *ptr += 2;

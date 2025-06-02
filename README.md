@@ -13,14 +13,26 @@ See the file `id3tag.h' for the current library interface.
 
 # Building and Installing
 
-libid3tag depends on zlib. It uses the CMake build system. To build it,
+libid3tag depends on zlib. On Linux, install the appropriate development
+packages for zlib using your system's package manager (e.g., apt, dnf, pacman).
+On Windows you can use vcpkg, which will build it from source. Alternatively,
+you can use any MSYS2 environment of your choice or Cygwin.
+
+libid3tag uses the CMake build system. To build it, no matter your platform,
 run:
 
 ``` bash
-$ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build
-$ cmake --build build --parallel number-of-cpu-cores
-$ cmake --install build
+$ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build # Configures command
+$ cmake --build build --parallel number-of-cpu-cores # Build command
+$ cmake --install build # Install command
 ```
+
+If using vcpkg, add
+`-DCMAKE_TOOLCHAIN_FILE=C:/Path/To/vcpkg/scripts/buildsystems/vcpkg.cmake` to
+the end of your build command.
+
+To build libid3tag as a static library, simply add `-DBUILD_SHARED_LIBS=OFF` at
+the end of your build command.
 
 # Copyright
 

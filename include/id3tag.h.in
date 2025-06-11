@@ -44,6 +44,41 @@ typedef unsigned char id3_latin1_t;
 typedef uint16_t id3_utf16_t;
 typedef signed char id3_utf8_t;
 
+/** @brief An ID3 tag.
+ *
+ * Being the crux of the library, this struct represents an overall ID3 v2.4
+ * tag. Although this represents an ID3 v2.4 tag, the library supports all ID3
+ * v1 and v2 tags, with the latter taking precedence if both are found.
+ * Additionally, all internal tags are translated to an ID3 v2.4 tag too.
+ *
+ * For more information on general ID3 tags, please see
+ * https://id3.org/Developer%20Information.
+ *
+ * This struct is refcounted. See @ref usage_references for more information.
+ *
+ * This is an opaque struct. Please consult the appropriate `id3_tag_*`
+ * functions to use this struct appropriately. Consequently, these fields
+ * remain undocumented.
+ *
+ * Note that there is a function, @ref id3_tag_query, that, despite its name,
+ * does not work with any `id3_tag` structs. For more information about that
+ * function, please see its documentation.
+ *
+ * The rest of the functions with the `id3_tag_` prefix do work with `id3_tag`
+ * structs, and they are listed below:
+ *
+ * - @ref id3_tag_new
+ * - @ref id3_tag_delete
+ * - @ref id3_tag_version
+ * - @ref id3_tag_options
+ * - @ref id3_tag_setlength
+ * - @ref id3_tag_clearframes
+ * - @ref id3_tag_attachframe
+ * - @ref id3_tag_detachframe
+ * - @ref id3_tag_findframe
+ * - @ref id3_tag_parse
+ * - @ref id3_tag_render
+ */
 struct id3_tag {
   unsigned int refcount;
   unsigned int version;
@@ -144,6 +179,16 @@ enum {
   ID3_TAG_OPTION_ID3V1             = 0x0100	/* render ID3v1/ID3v1.1 tag */
 };
 
+/** @brief Represents an ID3 frame.
+ *
+ * An ID3 frame is the actual content portion of an ID3 frame. For dealing with
+ * the whole tag itself, please see @ref id3_tag.
+ *
+ * "Member functions" of this structure:
+ * - @ref id3_frame_new
+ * - @ref id3_frame_delete
+ * - @ref id3_frame_field
+ */
 struct id3_frame {
   char id[5];
   char const *description;
@@ -204,6 +249,46 @@ enum id3_field_textencoding {
   ID3_FIELD_TEXTENCODING_UTF_8      = 0x03
 };
 
+/** @brief Represents the actual content of a frame.
+ *
+ * Only one type of field can be set at a time. A field can be one of several
+ * types:
+ *   - A number.
+ *   - A string.
+ *   - A list of strings.
+ *   - A language field.
+ *   - A date (as a string formatted as 'DDMM').
+ *   - A frame ID.
+ *   - Binary data (such as a picture, etc).
+ *
+ * @note All strings must be:
+ *   - Encoded in either ASCII or UTF-16 **with BOM** (any endianness)
+ *   - Null terminated.
+ *
+ * "Member functions" of this union:
+ *   - @ref id3_field_type
+ *   - @ref id3_field_setint
+ *   - @ref id3_field_settextencoding
+ *   - @ref id3_field_setstrings
+ *   - @ref id3_field_addstring
+ *   - @ref id3_field_setlanguage
+ *   - @ref id3_field_setlatin1
+ *   - @ref id3_field_setfulllatin1
+ *   - @ref id3_field_setstring
+ *   - @ref id3_field_setfullstring
+ *   - @ref id3_field_setframeid
+ *   - @ref id3_field_setbinarydata
+ *   - @ref id3_field_getint
+ *   - @ref id3_field_gettextencoding
+ *   - @ref id3_field_getlatin1
+ *   - @ref id3_field_getfulllatin1
+ *   - @ref id3_field_getstring
+ *   - @ref id3_field_getfullstring
+ *   - @ref id3_field_getnstrings
+ *   - @ref id3_field_getstrings
+ *   - @ref id3_field_getframeid
+ *   - @ref id3_field_getbinarydata
+ */
 union id3_field {
   enum id3_field_type type;
   struct {

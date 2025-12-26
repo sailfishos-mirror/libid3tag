@@ -326,18 +326,67 @@ union id3_field {
 
 /* file interface */
 
+/// Enum for different file modes.
 enum id3_file_mode {
+  /// Open the file read-only.
   ID3_FILE_MODE_READONLY = 0,
+
+  /// Open the file read and write.
   ID3_FILE_MODE_READWRITE
 };
 
-struct id3_file *id3_file_open(char const *, enum id3_file_mode);
-struct id3_file *id3_file_fdopen(int, enum id3_file_mode);
-int id3_file_close(struct id3_file *);
+/** @brief Opens a file from a path.
+ *
+ * @param path The path of the file to open. Must not be NULL.
+ * @param mode The mode to open the file in.
+ * @return An @ref id3_file struct with the open file or NULL on failiure.
+ */
+struct id3_file *id3_file_open(char const* path, enum id3_file_mode mode);
 
-struct id3_tag *id3_file_tag(struct id3_file const *);
+/** @brief Opens a file from a file descriptor.
+ * The given file descriptor becomes owned by the corresponding `id3_file`
+ * struct returned from this function.
+ *
+ * @note It is recommended to use @ref id3_file_open for full cross-platform
+ * support as this function will not be available on Windows (except through
+ * Cygwin or similar) in a future version of the library.
+ *
+ * @param fd The file descriptor of the file to open.
+ * @param mode The mode to open the file in.
+ * @return An `id3_file` struct that holds the opened file. Call
+ */
+struct id3_file *id3_file_fdopen(int fd, enum id3_file_mode mode);
 
-int id3_file_update(struct id3_file *);
+/** @brief Closes a file.
+ *
+ * Any resources associated with it, such as the primary tag, is automatically
+ * deallocated for you.
+ *
+ * @note Even when closing the file fails, previously allocated memory is still
+ * be deallocated.
+ *
+ * @param file The file to close. Must not be NULL.
+ * @return 0 on success, -1 on failure.
+ */
+int id3_file_close(struct id3_file* file);
+
+/** @brief Gets a reference to the file's primary tag.
+ *
+ * The returned tag is a reference to the file's primary tag that is
+ * automatically deallocated when @ref id3_file_close is called.
+ *
+ * @param file The file to get the primary tag from. Must not be NULL.
+ * @return The primary tag from the file.
+ */
+struct id3_tag *id3_file_tag(struct id3_file const* file);
+
+/** @brief Updates the primary tag.
+ *
+ * Use this function to write an updated ID3 tag back to a file.
+ *
+ * @param file The file to write an updated tag back to. Must not be NULL.
+ */
+int id3_file_update(struct id3_file* file);
 
 /* tag interface */
 

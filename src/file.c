@@ -48,6 +48,26 @@ struct filetag {
   id3_length_t length;
 };
 
+/** @brief Represents an opened file.
+ *
+ * Each file contains a primary tag that is owned by this struct. For a basic
+ * program that only needs to _read_ ID3 tags and doesn't perform any
+ * modifications, you can use this struct and its surrounding functions that
+ * operate on it to retrieve a tag from a file. For a program that needs to
+ * _modify_ tags, you should instead read from the file yourself directly.
+ *
+ * libid3tag provides functions to help you read ID3 tags from a file directly.
+ * For that, see @ref id3_tag for more information.
+ *
+ * This struct is opaque. Do not use any of the fields directly.
+ *
+ * Functions to operate on this struct:
+ * - @ref id3_file_fdopen
+ * - @ref id3_file_open
+ * - @ref id3_file_close
+ * - @ref id3_file_tag
+ * - @ref id3_file_update
+ */
 struct id3_file {
   FILE *iofile;
   enum id3_file_mode mode;

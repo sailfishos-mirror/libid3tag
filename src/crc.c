@@ -105,7 +105,7 @@ unsigned long const crc_table[256] = {
  */
 unsigned long id3_crc_compute(id3_byte_t const *data, id3_length_t length)
 {
-  register unsigned long crc;
+  unsigned long crc;
 
   for (crc = 0xffffffffL; length >= 8; length -= 8) {
     crc = crc_table[(crc ^ *data++) & 0xff] ^ (crc >> 8);

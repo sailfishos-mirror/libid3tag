@@ -266,32 +266,34 @@ id3_ucs4_t *id3_utf16_deserialize(id3_byte_t const **ptr, id3_length_t length,
       break;
 
     default:
-      id3_length_t i; int nb0 = 0; int nb1 = 0;
-      byteorder = ID3_UTF16_BYTEORDER_BE; // defaults to Big Endian
-      // There is no BOM is this UTF16 string
-      // Figure out the byte order
-      for(i = 0; i < length/2; i+=2) {
-        id3_byte_t c0 = (*ptr)[i];
-        id3_byte_t c1 = (*ptr)[i+1];
-        if(c0 == 0x20 && c1 == 0x00) {
-          // LE space character detected
-          byteorder = ID3_UTF16_BYTEORDER_LE;
-          break;
+      {
+        id3_length_t i; int nb0 = 0; int nb1 = 0;
+        byteorder = ID3_UTF16_BYTEORDER_BE; // defaults to Big Endian
+        // There is no BOM is this UTF16 string
+        // Figure out the byte order
+        for(i = 0; i < length/2; i+=2) {
+          id3_byte_t c0 = (*ptr)[i];
+          id3_byte_t c1 = (*ptr)[i+1];
+          if(c0 == 0x20 && c1 == 0x00) {
+            // LE space character detected
+            byteorder = ID3_UTF16_BYTEORDER_LE;
+            break;
+          }
+          if(c0 == 0x00 && c1 == 0x20) {
+            // BE space character detected
+            break;
+          }
+          if(c0 > 0)
+            nb0++;
+          if(c1 > 0)
+            nb1++;
         }
-        if(c0 == 0x00 && c1 == 0x20) {
-          // BE space character detected
-          break;
+        if(i >= length/2) {
+          // No space character in the string: must use statistical approach
+          // by counting the number of Latin ISO 8 bit characters
+          if(nb1 < nb0)
+            byteorder = ID3_UTF16_BYTEORDER_LE;
         }
-        if(c0 > 0)
-          nb0++;
-        if(c1 > 0)
-          nb1++;
-      }
-      if(i >= length/2) {
-        // No space character in the string: must use statistical approach
-        // by counting the number of Latin ISO 8 bit characters
-        if(nb1 < nb0)
-          byteorder = ID3_UTF16_BYTEORDER_LE;
       }
     }
   }

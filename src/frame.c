@@ -196,7 +196,7 @@ struct id3_frame *obsolete(char const *id, id3_byte_t const *data,
 }
 
 static
-struct id3_frame *unparseable(char const *id, id3_byte_t const **ptr,
+struct id3_frame *unparsable(char const *id, id3_byte_t const **ptr,
             id3_length_t length, int flags,
             int group_id, int encryption_method,
             id3_length_t decoded_length)
@@ -304,7 +304,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
       end = *ptr + size;
 
       if (flags & (ID3_FRAME_FLAG_FORMATFLAGS & ~0x00e0)) {
-        frame = unparseable((char const *) id, ptr, end - *ptr, 0, 0, 0, 0);
+        frame = unparsable((char const *) id, ptr, end - *ptr, 0, 0, 0, 0);
         goto done;
       }
 
@@ -371,7 +371,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
     end = *ptr + size;
 
     if (flags & (ID3_FRAME_FLAG_FORMATFLAGS & ~ID3_FRAME_FLAG_KNOWNFLAGS)) {
-      frame = unparseable((char const *) id, ptr, end - *ptr, flags, 0, 0, 0);
+      frame = unparsable((char const *) id, ptr, end - *ptr, flags, 0, 0, 0);
       goto done;
     }
 
@@ -417,7 +417,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
   }
 
   if (flags & ID3_FRAME_FLAG_ENCRYPTION) {
-    frame = unparseable((char const *) id, &data, end - data, flags,
+    frame = unparsable((char const *) id, &data, end - data, flags,
       group_id, encryption_method, decoded_length);
     goto done;
   }

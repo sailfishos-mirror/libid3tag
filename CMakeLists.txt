@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(id3tag VERSION 0.16.3)
+project(id3tag VERSION 0.16.3 LANGUAGES C)
 
 option(BUILD_SHARED_LIBS "Build dynamic library" ON)
 

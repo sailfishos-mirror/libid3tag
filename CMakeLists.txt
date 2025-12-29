@@ -11,6 +11,15 @@ set(LIBRARY_SOVERSION 0)
 
 include(GNUInstallDirs)
 
+add_custom_command(
+    COMMAND ${CMAKE_COMMAND} -P genre.dat.cmake genre.dat.in ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
+    MAIN_DEPENDENCY genre.dat.in
+    DEPENDS genre.dat.cmake
+    COMMENT "Generating genre.dat from genre.dat.in"
+)
+
 # Build (see src/CMakeLists.txt)
 add_library(id3tag
     src/compat.c
@@ -21,6 +30,7 @@ add_library(id3tag
     src/frame.c
     src/frametype.c
     src/genre.c
+    ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
     src/latin1.c
     src/parse.c
     src/render.c

@@ -216,7 +216,8 @@ int id3_tag_detachframe(struct id3_tag *tag, struct id3_frame *frame)
 struct id3_frame *id3_tag_findframe(struct id3_tag const *tag,
             char const *id, unsigned int index)
 {
-  unsigned int len, i;
+  size_t len;
+  unsigned int i;
 
   assert(tag);
 
@@ -228,7 +229,7 @@ struct id3_frame *id3_tag_findframe(struct id3_tag const *tag,
   if (len == 4) {
     struct id3_compat const *compat;
 
-    compat = id3_compat_lookup(id, len);
+    compat = id3_compat_lookup(id, 4);
     if (compat && compat->equiv && !compat->translate) {
       id  = compat->equiv;
       len = strlen(id);

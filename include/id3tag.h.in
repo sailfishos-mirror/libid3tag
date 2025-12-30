@@ -246,6 +246,8 @@ enum id3_file_mode {
   ID3_FILE_MODE_READWRITE
 };
 
+struct id3_file; /* opaque type */
+
 struct id3_file *id3_file_open(char const *, enum id3_file_mode);
 struct id3_file *id3_file_fdopen(int, enum id3_file_mode);
 int id3_file_close(struct id3_file *);

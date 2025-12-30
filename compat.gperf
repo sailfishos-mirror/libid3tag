@@ -193,27 +193,52 @@ int translate_APIC(struct id3_frame *frame, char const *oldid,
   id3_byte_t const *end;
   enum id3_field_textencoding encoding;
   int i;
-  
+
   /* v2.2 PIC has a 3-byte image format field that is incompatible
      with an APIC latin1 null-terminated string
   */
-  
+
   assert(frame->nfields == 5);
-  
+
   encoding = ID3_FIELD_TEXTENCODING_ISO_8859_1;
 
   end = data + length;
 
   for (i = 0; i < frame->nfields; ++i) {
     if (i == 1) {
-      // Parse Image Format as 3-byte string
-      frame->fields[i].type = ID3_FIELD_TYPE_LANGUAGE;
-    }
+      /* Parse Image Format as 3-byte string */
+      static id3_latin1_t const image_type_JPG[3] = { 'J', 'P', 'G' };
+      static id3_latin1_t const mime_type_JPG[] =
+        { 'i', 'm', 'a', 'g', 'e', '/', 'j', 'p', 'e', 'g', 0 };
+      static id3_latin1_t const image_type_PNG[3] = { 'P', 'N', 'G' };
+      static id3_latin1_t const mime_type_PNG[] =
+        { 'i', 'm', 'a', 'g', 'e', '/', 'p', 'n', 'g', 0 };
+      id3_latin1_t image_format[4] = { 0 };
+      id3_latin1_t const *mime_type = image_format;
 
-    if (id3_field_parse(&frame->fields[i], &data, end - data, &encoding) == -1)
+      if (end - data < 3)
+          return -1;
+      id3_parse_immediate(&data, 3, (char *) &image_format[0]);
+      if (memcmp(image_format, image_type_JPG, 3) == 0)
+         mime_type = mime_type_JPG;
+      else if (memcmp(image_format, image_type_PNG, 3) == 0)
+         mime_type = mime_type_PNG;
+      /*
+       * If we don't recognize the 3-byte image code, we just return it
+       * as a MIME type directly.  Note that per section 4.14 of the
+       * "ID3 tag version 2.4.0 - Native Frames" specification, if an
+       * APIC's MIME type is missing a media type name is omitted, "image/"
+       * is implied.  Therefore passing back the 3-byte specifier isn't
+       * a bad guess.
+       *
+       * See https://id3.org/id3v2.4.0-frames
+       */
+      id3_field_setlatin1(&frame->fields[i], mime_type);
+    } else if (id3_field_parse(&frame->fields[i], &data, end - data, &encoding) == -1) {
       return -1;
+    }
   }
-  
+
   return 0;
 }
 

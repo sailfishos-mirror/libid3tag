@@ -38,9 +38,9 @@ function(gperf_to_c basename)
     add_custom_command(
         COMMAND ${GPERF} -L ANSI-C -tCcTonD -K id -N id3_${basename}_lookup -s -3 -k * --output-file=${CMAKE_CURRENT_BINARY_DIR}/${basename}.c ${basename}.gperf
         VERBATIM  # needed so the '*' doesn't shell-expand
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/src
         OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${basename}.c
-        DEPENDS ${basename}.gperf
+        DEPENDS src/${basename}.gperf
         COMMENT "Generating ${basename}.c from ${basename}.gperf"
     )
 endfunction()

@@ -20,15 +20,42 @@ add_custom_command(
     COMMENT "Generating genre.dat from genre.dat.in"
 )
 
+find_program(GPERF NAMES gperf)
+if(NOT GPERF)
+    message(FATAL_ERROR "gperf hash function generator tool not found")
+endif()
+message(STATUS "Found gperf: ${GPERF}")
+execute_process(
+    COMMAND ${GPERF} --version
+    OUTPUT_VARIABLE GPERF_VERSION
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND_ERROR_IS_FATAL ANY
+)
+string(REGEX MATCH "[0-9]+\\.[^ \n]*" GPERF_VERSION "${GPERF_VERSION}")
+message(STATUS "Gperf version: ${GPERF_VERSION}")
+
+function(gperf_to_c basename)
+    add_custom_command(
+        COMMAND ${GPERF} -L ANSI-C -tCcTonD -K id -N id3_${basename}_lookup -s -3 -k * --output-file=${CMAKE_CURRENT_BINARY_DIR}/${basename}.c ${basename}.gperf
+        VERBATIM  # needed so the '*' doesn't shell-expand
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${basename}.c
+        DEPENDS ${basename}.gperf
+        COMMENT "Generating ${basename}.c from ${basename}.gperf"
+    )
+endfunction()
+gperf_to_c(compat)
+gperf_to_c(frametype)
+
 # Build (see src/CMakeLists.txt)
 add_library(id3tag
-    src/compat.c
+    ${CMAKE_CURRENT_BINARY_DIR}/compat.c
     src/crc.c
     src/debug.c
     src/field.c
     src/file.c
     src/frame.c
-    src/frametype.c
+    ${CMAKE_CURRENT_BINARY_DIR}/frametype.c
     src/genre.c
     ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
     src/latin1.c
@@ -49,7 +76,7 @@ configure_file(
 )
 
 target_include_directories(id3tag PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>/src
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
@@ -82,6 +109,21 @@ include(CheckFunctionExists)
 check_function_exists(ftruncate HAVE_FTRUNCATE)
 if(HAVE_FTRUNCATE)
   target_compile_definitions(id3tag PRIVATE HAVE_FTRUNCATE)
+endif()
+
+if(GPERF_VERSION VERSION_LESS "3.1")
+    # Versions of gperf before 3.1 generated lookup functions that used
+    # "unsigned int" rather than "size_t" for the length parameter.
+    #
+    # This is fine for libid3tag's purposes (the largest value we ever
+    # pass is 4, so no worry about overflow)  However, our function prototypes
+    # in {compat,frametype}.h need to match.
+    #
+    # gperf 3.1 came out in 2017, but MacOS ships with a /usr/bin/gperf 3.0.3
+    # from a decade earlier (prior to gperf switching to GPL v3)  It is
+    # therefore convenient for MacOS users if we can work with older gperf
+    # versions.
+    target_compile_definitions(id3tag PRIVATE GPERF_LEN_TYPE_UNSIGNED)
 endif()
 
 find_package(ZLIB REQUIRED)

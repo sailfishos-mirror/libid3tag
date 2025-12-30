@@ -1,11 +1,8 @@
-
 libid3tag - ID3 tag manipulation library
 
 Copyright (C) 2000-2004 Underbit Technologies, Inc.
 
-Copyright (C) 2021-2024 Tenacity Team and Contributors
-
-\$Id: README,v 1.5 2004/01/23 09:41:32 rob Exp \$
+Copyright (C) 2021-2025 Tenacity Team and Contributors
 
 # Introduction
 
@@ -20,10 +17,12 @@ packages for zlib using your system's package manager (e.g., apt, dnf, pacman).
 On Windows you can use vcpkg, which will build it from source. Alternatively,
 you can use any MSYS2 environment of your choice or Cygwin.
 
+libid3tag also requires [GNU gperf](https://www.gnu.org/software/gperf/) to build.
+
 libid3tag uses the CMake build system. To build it, no matter your platform,
 run:
 
-``` bash
+```sh
 $ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build # Configures command
 $ cmake --build build --parallel number-of-cpu-cores # Build command
 $ cmake --install build # Install command

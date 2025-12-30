@@ -33,8 +33,13 @@ struct id3_compat {
   id3_compat_func_t *translate;
 };
 
+# ifdef GPERF_LEN_TYPE_UNSIGNED
+struct id3_compat const *id3_compat_lookup(register char const *,
+             register unsigned int);
+# else
 struct id3_compat const *id3_compat_lookup(register char const *,
              register size_t);
+# endif
 
 int id3_compat_fixup(struct id3_tag *);
 

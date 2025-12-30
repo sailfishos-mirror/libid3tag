@@ -36,7 +36,12 @@ extern struct id3_frametype const id3_frametype_experimental;
 extern struct id3_frametype const id3_frametype_unknown;
 extern struct id3_frametype const id3_frametype_obsolete;
 
+# ifdef GPERF_LEN_TYPE_UNSIGNED
+struct id3_frametype const *id3_frametype_lookup(register char const *,
+             register unsigned int);
+# else
 struct id3_frametype const *id3_frametype_lookup(register char const *,
              register size_t);
+# endif
 
 # endif

@@ -1,6 +1,7 @@
 /*
  * libid3tag - ID3 tag manipulation library
  * Copyright (C) 2000-2004 Underbit Technologies, Inc.
+ * Copyright (C) 2021-2025 Tenacity Team and Contributors
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +23,7 @@
 /*
  * These are the ID3 genre names, taken as a combination of names from ID3v1
  * (listed in Appendix A of the ID3 tag version 2.4.0 informal standard) and
- * the extensions made by Winamp as of version 2.80.
+ * the extensions made by Winamp as of version 5.6.
  */
 
 /* ID3v1 names (0-79) */
@@ -115,7 +116,7 @@ Folk/Rock
 National Folk
 Swing
 Fast-Fusion
-Bebob
+Bebop
 Latin
 Revival
 Celtic
@@ -159,11 +160,11 @@ Dance Hall
 Goa
 Drum & Bass
 Club-House
-Hardcore
+Hardcore Techno
 Terror
 Indie
 BritPop
-Negerpunk
+Afro-Punk
 Polsk Punk
 Beat
 Christian Gangsta Rap
@@ -176,5 +177,5 @@ Merengue
 Salsa
 Thrash Metal
 Anime
-JPop
+Jpop
 Synthpop

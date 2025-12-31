@@ -24,7 +24,7 @@ jobs:
             cmake_config: --config RelWithDebInfo
             cmake_extras: >-
               -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake
-            vcpkg_tripet: x64-windows
+            vcpkg_triplet: x64-windows
             vcpkg_binary_cache: C:\Users\runneradmin\AppData\Local\vcpkg\archives
 
     name: ${{ matrix.name }}
@@ -45,12 +45,12 @@ jobs:
       if: startsWith(matrix.os, 'windows')
       run: vcpkg install zlib
       env:
-        VCPKG_DEFAULT_TRIPLET: ${{ matrix.vcpkg_tripet }}
+        VCPKG_DEFAULT_TRIPLET: ${{ matrix.vcpkg_triplet }}
     - name: Configure
       run: >-
         cmake
         -D CMAKE_INSTALL_PREFIX=${{ matrix.install_dir }}
-        -D VCPKG_TARGET_TRIPLET=${{ matrix.vcpkg_tripet }}
+        -D VCPKG_TARGET_TRIPLET=${{ matrix.vcpkg_triplet }}
         ${{ matrix.cmake_extras }}
         -S . -B build
     - name: Build

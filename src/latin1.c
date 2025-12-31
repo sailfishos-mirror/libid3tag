@@ -19,12 +19,11 @@
  * $Id: latin1.c,v 1.10 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "latin1.h"
 # include "global.h"
 
 # include <stdlib.h>
 
-# include "id3tag.h"
-# include "latin1.h"
 # include "ucs4.h"
 
 /*

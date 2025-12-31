@@ -19,10 +19,10 @@
  * $Id: version.c,v 1.7 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "version.h"
 # include "global.h"
 
 # include "id3tag.h"
-# include "version.h"
 
 char const id3_version[]   = "ID3 Tag Library " ID3_VERSION;
 char const id3_copyright[] = "Copyright (C) " ID3_PUBLISHYEAR " " ID3_AUTHOR;

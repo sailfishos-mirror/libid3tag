@@ -19,10 +19,8 @@
  * $Id: crc.c,v 1.11 2004/02/17 02:04:10 rob Exp $
  */
 
-# include "global.h"
-
-# include "id3tag.h"
 # include "crc.h"
+# include "global.h"
 
 static
 unsigned long const crc_table[256] = {

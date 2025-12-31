@@ -19,13 +19,11 @@
  * $Id: util.c,v 1.9 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "util.h"
 # include "global.h"
 
 # include <stdlib.h>
 # include <zlib.h>
-
-# include "id3tag.h"
-# include "util.h"
 
 /*
  * NAME:	util->unsynchronise()

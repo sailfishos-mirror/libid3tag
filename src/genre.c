@@ -19,6 +19,7 @@
  * $Id: genre.c,v 1.8 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "genre.h"
 # include "global.h"
 
 # include "id3tag.h"

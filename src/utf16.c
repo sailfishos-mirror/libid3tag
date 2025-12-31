@@ -19,12 +19,11 @@
  * $Id: utf16.c,v 1.9 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "utf16.h"
 # include "global.h"
 
 # include <stdlib.h>
 
-# include "id3tag.h"
-# include "utf16.h"
 # include "ucs4.h"
 
 /*

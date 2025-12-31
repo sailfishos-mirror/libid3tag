@@ -19,6 +19,7 @@
  * $Id: field.c,v 1.16 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "field.h"
 # include "global.h"
 
 # include <stdlib.h>
@@ -28,8 +29,6 @@
 #  include <assert.h>
 # endif
 
-# include "id3tag.h"
-# include "field.h"
 # include "frame.h"
 # include "render.h"
 # include "ucs4.h"

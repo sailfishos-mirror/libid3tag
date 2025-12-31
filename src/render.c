@@ -19,6 +19,7 @@
  * $Id: render.c,v 1.11 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "render.h"
 # include "global.h"
 
 # include <string.h>
@@ -28,8 +29,6 @@
 #  include <assert.h>
 # endif
 
-# include "id3tag.h"
-# include "render.h"
 # include "ucs4.h"
 # include "latin1.h"
 # include "utf16.h"

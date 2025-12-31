@@ -19,6 +19,7 @@
  * $Id: parse.c,v 1.9 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "parse.h"
 # include "global.h"
 
 # ifdef HAVE_ASSERT_H
@@ -28,8 +29,6 @@
 # include <stdlib.h>
 # include <string.h>
 
-# include "id3tag.h"
-# include "parse.h"
 # include "latin1.h"
 # include "utf16.h"
 # include "utf8.h"

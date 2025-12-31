@@ -23,6 +23,7 @@
 # define LIBID3TAG_COMPAT_H
 
 # include "id3tag.h"
+# include <sys/types.h>
 
 typedef int id3_compat_func_t(struct id3_frame *,
             id3_byte_t const *, id3_length_t);

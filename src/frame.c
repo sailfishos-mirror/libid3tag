@@ -28,7 +28,6 @@
 #  include <assert.h>
 # endif
 
-# include "id3tag.h"
 # include "frame.h"
 # include "frametype.h"
 # include "compat.h"

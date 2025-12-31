@@ -19,6 +19,7 @@
  * $Id: debug.c,v 1.8 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "debug.h"
 # include "global.h"
 
 # undef malloc
@@ -27,10 +28,7 @@
 # undef free
 
 # include <stdio.h>
-# include <stdlib.h>
 # include <string.h>
-
-# include "debug.h"
 
 # if defined(DEBUG)
 

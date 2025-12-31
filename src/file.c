@@ -19,6 +19,7 @@
  * $Id: file.c,v 1.21 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "file.h"
 # include "global.h"
 
 # include <stdio.h>
@@ -38,7 +39,6 @@
 # endif
 
 # include "id3tag.h"
-# include "file.h"
 # include "tag.h"
 # include "field.h"
 

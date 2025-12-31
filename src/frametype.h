@@ -22,6 +22,8 @@
 # ifndef LIBID3TAG_FRAMETYPE_H
 # define LIBID3TAG_FRAMETYPE_H
 
+# include <sys/types.h>
+
 struct id3_frametype {
   char const *id;
   unsigned int nfields;

@@ -22,6 +22,8 @@
 # ifndef LIBID3TAG_PARSE_H
 # define LIBID3TAG_PARSE_H
 
+# include "id3tag.h"
+
 signed long id3_parse_int(id3_byte_t const **, unsigned int);
 unsigned long id3_parse_uint(id3_byte_t const **, unsigned int);
 unsigned long id3_parse_syncsafe(id3_byte_t const **, unsigned int);

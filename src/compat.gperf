@@ -20,6 +20,7 @@
  * $Id: compat.gperf,v 1.11 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "compat.h"
 # include "global.h"
 
 # include <stdlib.h>
@@ -29,8 +30,6 @@
 #  include <assert.h>
 # endif
 
-# include "id3tag.h"
-# include "compat.h"
 # include "frame.h"
 # include "field.h"
 # include "parse.h"

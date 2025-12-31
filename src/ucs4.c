@@ -19,12 +19,11 @@
  * $Id: ucs4.c,v 1.13 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "ucs4.h"
 # include "global.h"
 
 # include <stdlib.h>
 
-# include "id3tag.h"
-# include "ucs4.h"
 # include "latin1.h"
 # include "utf16.h"
 # include "utf8.h"

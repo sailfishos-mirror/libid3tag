@@ -19,6 +19,7 @@
  * $Id: tag.c,v 1.20 2004/02/17 02:04:10 rob Exp $
  */
 
+# include "tag.h"
 # include "global.h"
 
 # include <string.h>
@@ -28,8 +29,6 @@
 #  include <assert.h>
 # endif
 
-# include "id3tag.h"
-# include "tag.h"
 # include "frame.h"
 # include "compat.h"
 # include "parse.h"

@@ -20,12 +20,12 @@
  * $Id: frametype.gperf,v 1.7 2004/01/23 09:41:32 rob Exp $
  */
 
+# include "frametype.h"
 # include "global.h"
 
 # include <string.h>
 
 # include "id3tag.h"
-# include "frametype.h"
 
 # define FIELDS(id)  static enum id3_field_type const fields_##id[]
 

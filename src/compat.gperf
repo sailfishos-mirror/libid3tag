@@ -192,7 +192,7 @@ int translate_APIC(struct id3_frame *frame, char const *oldid,
 {
   id3_byte_t const *end;
   enum id3_field_textencoding encoding;
-  int i;
+  unsigned int i;
 
   /* v2.2 PIC has a 3-byte image format field that is incompatible
      with an APIC latin1 null-terminated string

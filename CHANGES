@@ -60,7 +60,7 @@ Version 0.15.0 (beta)
     null buffer pointer is passed.
 
   * Changed the file implementation to maintain information about present
-    but unparseable tags, instead of ignoring all tags and returning an
+    but unparsable tags, instead of ignoring all tags and returning an
     error.
 
   * Added an external dependency on zlib (libz), which is no longer

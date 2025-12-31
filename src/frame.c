@@ -461,7 +461,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
     frame->group_id = group_id;
 
     if (compat && compat->translate) {
-      if (compat->translate(frame, compat->id, data, end - data) == -1)
+      if (compat->translate(frame, data, end - data) == -1)
         goto fail;
     }
     else {

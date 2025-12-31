@@ -24,7 +24,7 @@
 
 # include "id3tag.h"
 
-typedef int id3_compat_func_t(struct id3_frame *, char const *,
+typedef int id3_compat_func_t(struct id3_frame *,
             id3_byte_t const *, id3_length_t);
 
 struct id3_compat {

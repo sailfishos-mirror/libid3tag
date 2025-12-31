@@ -131,7 +131,7 @@ WXX,  EQ(WXXX)  /* User defined URL link frame */
 %%
 
 static
-int translate_TCON(struct id3_frame *frame, char const *oldid,
+int translate_TCON(struct id3_frame *frame,
 		   id3_byte_t const *data, id3_length_t length)
 {
   id3_byte_t const *end;
@@ -187,7 +187,7 @@ int translate_TCON(struct id3_frame *frame, char const *oldid,
 }
 
 static
-int translate_APIC(struct id3_frame *frame, char const *oldid,
+int translate_APIC(struct id3_frame *frame,
 		   id3_byte_t const *data, id3_length_t length)
 {
   id3_byte_t const *end;

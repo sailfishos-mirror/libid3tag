@@ -118,7 +118,7 @@ int compare(id3_ucs4_t const *str1, id3_ucs4_t const *str2)
 int id3_genre_number(id3_ucs4_t const *string)
 {
   id3_ucs4_t const *ptr;
-  int i;
+  unsigned int i;
 
   if (string == 0 || *string == 0)
     return -1;
@@ -133,12 +133,12 @@ int id3_genre_number(id3_ucs4_t const *string)
 
     number = id3_ucs4_getnumber(string);
 
-    return (number <= 0xff) ? number : -1;
+    return (number <= 0xff) ? ((int) number) : -1;
   }
 
   for (i = 0; i < NGENRES; ++i) {
     if (compare(string, genre_table[i]))
-      return i;
+      return (int) i;
   }
 
   /* no equivalent */

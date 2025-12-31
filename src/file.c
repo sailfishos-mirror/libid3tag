@@ -543,16 +543,16 @@ int v1_write(struct id3_file *file,
   }
 # if defined(HAVE_FTRUNCATE)
   else if (file->flags & ID3_FILE_FLAG_ID3V1) {
-    long length;
+    long file_length;
 
     if (fseek(file->iofile, 0, SEEK_END) == -1)
       return -1;
 
-    length = ftell(file->iofile);
-    if (length == -1 || (length >= 0 && length < 128))
+    file_length = ftell(file->iofile);
+    if (file_length == -1 || (file_length >= 0 && file_length < 128))
       return -1;
 
-    if (ftruncate(fileno(file->iofile), length - 128) == -1)
+    if (ftruncate(fileno(file->iofile), file_length - 128) == -1)
       return -1;
 
     /* delete file tag reference */

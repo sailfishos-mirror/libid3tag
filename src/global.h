@@ -42,9 +42,11 @@
 
 /* conditional features */
 
-# if !defined(HAVE_ASSERT_H)
+# if defined(HAVE_ASSERT_H)
+#  include <assert.h>
+# else
 #  if defined(NDEBUG)
-#   define assert(x)  /* nothing */
+#   define assert(x)  do { /* nothing */ } while (0)
 #  else
 #   define assert(x)  do { if (!(x)) abort(); } while (0)
 #  endif

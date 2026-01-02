@@ -25,10 +25,6 @@
 # include <string.h>
 # include <stdlib.h>
 
-# ifdef HAVE_ASSERT_H
-#  include <assert.h>
-# endif
-
 # include "ucs4.h"
 # include "latin1.h"
 # include "utf16.h"

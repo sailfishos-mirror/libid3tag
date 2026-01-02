@@ -24,10 +24,6 @@
 # include <stdlib.h>
 # include <string.h>
 
-# ifdef HAVE_ASSERT_H
-#  include <assert.h>
-# endif
-
 # include "frame.h"
 # include "frametype.h"
 # include "compat.h"

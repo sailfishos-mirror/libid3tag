@@ -23,8 +23,8 @@ libid3tag uses the CMake build system. To build it, no matter your platform,
 run:
 
 ```sh
-$ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build # Configures command
-$ cmake --build build --parallel number-of-cpu-cores # Build command
+$ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build # Configure command
+$ cmake --build build --parallel <number-of-cpu-cores> # Build command
 $ cmake --install build # Install command
 ```
 
@@ -33,7 +33,17 @@ If using vcpkg, add
 the end of your build command.
 
 To build libid3tag as a static library, simply add `-DBUILD_SHARED_LIBS=OFF` at
-the end of your build command.
+the end of your build command.  If you want to build both shared and static libraries
+the easiest method is to just use two separate build directories:
+
+```sh
+$ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -S . -B build-shared
+$ cmake -DCMAKE_INSTALL_PREFIX=/where/you/want/to/install/to -DBUILD_SHARED_LIBS=OFF -S . -B build-static
+$ cmake --build build-shared --parallel <number-of-cpu-cores>
+$ cmake --build build-static --parallel <number-of-cpu-cores>
+$ cmake --install build-shared
+$ cmake --install build-static
+```
 
 # Copyright
 

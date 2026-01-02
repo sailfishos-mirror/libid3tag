@@ -42,9 +42,19 @@
 # include "tag.h"
 # include "field.h"
 
+# if defined(HAVE_FSEEKO) && defined(HAVE_FTELLO)
+typedef off_t id3_file_offset_t;
+#   define id3_fseek fseeko
+#   define id3_ftell ftello
+# else
+typedef long id3_file_offset_t;
+#   define id3_fseek fseek
+#   define id3_ftell ftell
+# endif
+
 struct filetag {
   struct id3_tag *tag;
-  unsigned long location;
+  id3_file_offset_t location;
   id3_length_t length;
 };
 
@@ -197,18 +207,18 @@ void del_filetag(struct id3_file *file, unsigned int index)
 static
 struct id3_tag *add_tag(struct id3_file *file, id3_length_t length)
 {
-  long location;
-  unsigned int i;
+  id3_file_offset_t location;
   struct filetag filetag;
   struct id3_tag *tag;
 
-  location = ftell(file->iofile);
+  location = id3_ftell(file->iofile);
   if (location == -1)
     return 0;
 
   /* check for duplication/overlap */
   {
-    unsigned long begin1, end1, begin2, end2;
+    unsigned int i;
+    id3_file_offset_t begin1, end1, begin2, end2;
 
     begin1 = location;
     end1   = begin1 + length;
@@ -269,7 +279,7 @@ int search_tags(struct id3_file *file)
 
   /* look for an ID3v1 tag */
 
-  if (fseek(file->iofile, -128, SEEK_END) == 0) {
+  if (id3_fseek(file->iofile, -128, SEEK_END) == 0) {
     size = query_tag(file->iofile);
     if (size > 0) {
       struct id3_tag const *tag;
@@ -297,10 +307,10 @@ int search_tags(struct id3_file *file)
     /* locate tags indicated by SEEK frames */
 
     while (tag && (frame = id3_tag_findframe(tag, "SEEK", 0))) {
-      long seek;
+      id3_file_offset_t seek;
 
       seek = id3_field_getint(id3_frame_field(frame, 0));
-      if (seek < 0 || fseek(file->iofile, seek, SEEK_CUR) == -1)
+      if (seek < 0 || id3_fseek(file->iofile, seek, SEEK_CUR) == -1)
         break;
 
       size = query_tag(file->iofile);
@@ -310,10 +320,10 @@ int search_tags(struct id3_file *file)
 
   /* look for a tag at the end of the file (before any ID3v1 tag) */
 
-  if (fseek(file->iofile, ((file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0) +
+  if (id3_fseek(file->iofile, ((file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0) +
       -10, SEEK_END) == 0) {
     size = query_tag(file->iofile);
-    if (size < 0 && fseek(file->iofile, size, SEEK_CUR) == 0) {
+    if (size < 0 && id3_fseek(file->iofile, size, SEEK_CUR) == 0) {
       size = query_tag(file->iofile);
       if (size > 0)
         add_tag(file, size);
@@ -517,11 +527,11 @@ int v1_write(struct id3_file *file,
   assert(!data || length == 128);
 
   if (data) {
-    long location;
+    id3_file_offset_t location;
 
-    if (fseek(file->iofile, (file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0,
+    if (id3_fseek(file->iofile, (file->flags & ID3_FILE_FLAG_ID3V1) ? -128 : 0,
         SEEK_END) == -1 ||
-        (location = ftell(file->iofile)) == -1 ||
+        (location = id3_ftell(file->iofile)) == -1 ||
         fwrite(data, 128, 1, file->iofile) != 1 ||
         fflush(file->iofile) == EOF)
       return -1;
@@ -543,12 +553,12 @@ int v1_write(struct id3_file *file,
   }
 # if defined(HAVE_FTRUNCATE)
   else if (file->flags & ID3_FILE_FLAG_ID3V1) {
-    long file_length;
+    id3_file_offset_t file_length;
 
-    if (fseek(file->iofile, 0, SEEK_END) == -1)
+    if (id3_fseek(file->iofile, 0, SEEK_END) == -1)
       return -1;
 
-    file_length = ftell(file->iofile);
+    file_length = id3_ftell(file->iofile);
     if (file_length == -1 || (file_length >= 0 && file_length < 128))
       return -1;
 
@@ -586,7 +596,7 @@ int v2_write(struct id3_file *file,
       file->tags[0].length == length) {
     /* easy special case: rewrite existing tag in-place */
 
-    if (fseek(file->iofile, file->tags[0].location, SEEK_SET) == -1 ||
+    if (id3_fseek(file->iofile, file->tags[0].location, SEEK_SET) == -1 ||
         fwrite(data, length, 1, file->iofile) != 1 ||
         fflush(file->iofile) == EOF)
       return -1;
@@ -603,9 +613,9 @@ int v2_write(struct id3_file *file,
   if ((buffer = (char *) malloc(datalen)) == NULL)
     return -1;
 
-  if (fseek(file->iofile, offset, SEEK_SET) == -1 ||
+  if (id3_fseek(file->iofile, offset, SEEK_SET) == -1 ||
       fread(buffer, datalen, 1, file->iofile) != 1 ||
-      fseek(file->iofile, 0, SEEK_SET) == -1 ||
+      id3_fseek(file->iofile, 0, SEEK_SET) == -1 ||
       fwrite(data, length, 1, file->iofile) != 1 ||
       fwrite(buffer, datalen, 1, file->iofile) != 1 ||
       fflush(file->iofile) == EOF) {

@@ -2,7 +2,7 @@ libid3tag - ID3 tag manipulation library
 
 Copyright (C) 2000-2004 Underbit Technologies, Inc.
 
-Copyright (C) 2021-2025 Tenacity Team and Contributors
+Copyright (C) 2021-2026 Tenacity Team and Contributors
 
 # Introduction
 

@@ -12,10 +12,10 @@ set(LIBRARY_SOVERSION 0)
 include(GNUInstallDirs)
 
 add_custom_command(
-    COMMAND ${CMAKE_COMMAND} -P genre.dat.cmake genre.dat.in ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
+    COMMAND ${CMAKE_COMMAND} -P genre.dat.cmake src/genre.dat.in ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/genre.dat
-    MAIN_DEPENDENCY genre.dat.in
+    MAIN_DEPENDENCY src/genre.dat.in
     DEPENDS genre.dat.cmake
     COMMENT "Generating genre.dat from genre.dat.in"
 )

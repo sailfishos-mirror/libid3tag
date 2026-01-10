@@ -70,9 +70,7 @@ void id3_tag_delete(struct id3_tag *tag)
   if (tag->refcount == 0) {
     id3_tag_clearframes(tag);
 
-    if (tag->frames)
-      free(tag->frames);
-
+    free(tag->frames);
     free(tag);
   }
 }
@@ -611,8 +609,7 @@ struct id3_tag *v2_parse(id3_byte_t const *ptr)
 */
 fail:
 
-  if (mem)
-    free(mem);
+  free(mem);
 
   return tag;
 }

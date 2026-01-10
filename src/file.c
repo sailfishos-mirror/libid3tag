@@ -352,8 +352,7 @@ void finish_file(struct id3_file *file)
 {
   unsigned int i;
 
-  if (file->path)
-    free(file->path);
+  free(file->path);
 
   if (file->primary) {
     id3_tag_delref(file->primary);
@@ -370,9 +369,7 @@ void finish_file(struct id3_file *file)
     }
   }
 
-  if (file->tags)
-    free(file->tags);
-
+  free(file->tags);
   free(file);
 }
 
@@ -687,8 +684,7 @@ int id3_file_update(struct id3_file *file)
 
   /* clean up; restore tag options */
 
-  if (id3v2)
-    free(id3v2);
+  free(id3v2);
 
   id3_tag_options(file->primary, ~0, options);
 

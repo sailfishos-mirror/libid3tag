@@ -173,8 +173,7 @@ int translate_TCON(struct id3_frame *frame,
     result = -1;
   }
 
-  if (string)
-    free(string);
+  free(string);
 
   return result;
 }

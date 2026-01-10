@@ -108,36 +108,31 @@ void id3_field_finish(union id3_field *field)
 
   case ID3_FIELD_TYPE_LATIN1:
   case ID3_FIELD_TYPE_LATIN1FULL:
-    if (field->latin1.ptr)
-      free(field->latin1.ptr);
+    free(field->latin1.ptr);
     break;
 
   case ID3_FIELD_TYPE_LATIN1LIST:
     for (i = 0; i < field->latin1list.nstrings; ++i)
       free(field->latin1list.strings[i]);
 
-    if (field->latin1list.strings)
-      free(field->latin1list.strings);
+    free(field->latin1list.strings);
     break;
 
   case ID3_FIELD_TYPE_STRING:
   case ID3_FIELD_TYPE_STRINGFULL:
-    if (field->string.ptr)
-      free(field->string.ptr);
+    free(field->string.ptr);
     break;
 
   case ID3_FIELD_TYPE_STRINGLIST:
     for (i = 0; i < field->stringlist.nstrings; ++i)
       free(field->stringlist.strings[i]);
 
-    if (field->stringlist.strings)
-      free(field->stringlist.strings);
+    free(field->stringlist.strings);
     break;
 
   case ID3_FIELD_TYPE_INT32PLUS:
   case ID3_FIELD_TYPE_BINARYDATA:
-    if (field->binary.data)
-      free(field->binary.data);
+    free(field->binary.data);
     break;
   }
 

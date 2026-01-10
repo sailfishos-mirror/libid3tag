@@ -125,9 +125,7 @@ void id3_frame_delete(struct id3_frame *frame)
     for (i = 0; i < frame->nfields; ++i)
       id3_field_finish(&frame->fields[i]);
 
-    if (frame->encoded)
-      free(frame->encoded);
-
+    free(frame->encoded);
     free(frame);
   }
 }
@@ -432,8 +430,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
     if (decomp == 0)
       goto fail;
 
-    if (mem)
-      free(mem);
+    free(mem);
 
     data = mem = decomp;
     end  = data + decoded_length;
@@ -472,8 +469,7 @@ struct id3_frame *id3_frame_parse(id3_byte_t const **ptr, id3_length_t length,
   }
 
  done:
-  if (mem)
-    free(mem);
+  free(mem);
 
   return frame;
 }

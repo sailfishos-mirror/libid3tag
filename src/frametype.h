@@ -20,6 +20,7 @@
 # ifndef LIBID3TAG_FRAMETYPE_H
 # define LIBID3TAG_FRAMETYPE_H
 
+# include "id3tag.h"
 # include <sys/types.h>
 
 struct id3_frametype {

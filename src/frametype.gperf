@@ -23,8 +23,6 @@
 
 # include <string.h>
 
-# include "id3tag.h"
-
 # define FIELDS(id)  static enum id3_field_type const fields_##id[]
 
 /* frame field descriptions */

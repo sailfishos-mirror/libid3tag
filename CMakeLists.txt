@@ -186,3 +186,14 @@ install(
     "${CMAKE_CURRENT_BINARY_DIR}/packaging/id3tagConfigVersion.cmake"
   DESTINATION "${ID3TAG_INSTALL_CMAKEDIR}"
 )
+
+# CPack setup
+list(
+    APPEND CPACK_SOURCE_IGNORE_FILES
+        "${CMAKE_SOURCE_DIRECTORY}/build.*"
+	"${CMAKE_SOURCE_DIRECTORY}/\\.git/"
+)
+
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "id3tag-${PROJECT_VERSION}-source")
+
+include(CPack)

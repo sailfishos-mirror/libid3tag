@@ -45,6 +45,27 @@ $ cmake --install build-shared
 $ cmake --install build-static
 ```
 
+# Packaging the Source Code
+First, follow the instructions above, until you get to the "configure command".
+Do not run any commands after that command and do not follow the rest of the
+normal build instructions, only return to this section when done. Then, run the
+following command to package the source code:
+
+```sh
+$ cmake --build . --target package_source
+```
+
+Alternatively, you can use `cpack` instead in the following way:
+
+```sh
+$ cpack --config CPackSourceConfig.cmake
+```
+
+Either of the commands will perform the same task. After running either of the
+above commands, you will get a variety of tarballs you can use, including a
+`.tar.gz` tarball, a `.tar.bz2` tarball, a `.tar.xz` tarball, and even a
+`.tar.Z` tarball. Whichever tarball you choose is solely your preference.
+
 # Copyright
 
 Please read the `COPYRIGHT` file for copyright and warranty information.

@@ -85,7 +85,7 @@ if(WIN32 AND BUILD_SHARED_LIBS)
 endif()
 
 set_target_properties(id3tag PROPERTIES
-  VERSION ${CMAKE_PROJECT_VERSION}
+  VERSION ${PROJECT_VERSION}
   SOVERSION ${LIBRARY_SOVERSION}
 )
 
@@ -177,7 +177,7 @@ configure_package_config_file(packaging/id3tagConfig.cmake.in
 )
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/packaging/id3tagConfigVersion.cmake"
-  VERSION "${CMAKE_PROJECT_VERSION}"
+  VERSION "${PROJECT_VERSION}"
   COMPATIBILITY SameMajorVersion
 )
 install(

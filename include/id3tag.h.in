@@ -456,9 +456,33 @@ int id3_genre_number(id3_ucs4_t const *);
 
 /* ucs4 interface */
 
-id3_latin1_t *id3_ucs4_latin1duplicate(id3_ucs4_t const *);
-id3_utf16_t *id3_ucs4_utf16duplicate(id3_ucs4_t const *);
-id3_utf8_t *id3_ucs4_utf8duplicate(id3_ucs4_t const *);
+/** @brief Converts a UCS4 string to a Latin1 (aka. ISO-8859-1 or ASCII)
+ * string.
+ *
+ * @param ucs4 A UCS-4 string to convert to Latin1 (or ISO-8859-1/ASCII).
+ *
+ * @return The string converted from UCS-4 to ISO-8859-1. The returned string
+ * must be freed by the caller.
+ */
+id3_latin1_t *id3_ucs4_latin1duplicate(id3_ucs4_t const * ucs4);
+
+/** @brief Converts a UCS4 string to a UTF-16 string.
+ *
+ * @param ucs4 A UCS-4 string to convert to UTF-16.
+ *
+ * @return The string converted from UCS-4 to UTF-16. The returned string must
+ * be freed by the caller.
+ */
+id3_utf16_t *id3_ucs4_utf16duplicate(id3_ucs4_t const * ucs4);
+
+/** @brief Converts a UCS4 string to a UTF-8 string.
+ *
+ * @param ucs4 A UCS-4 string to convert to UTF-8.
+ *
+ * @return The string converted from UCS-4 to UTF-8. The returned string must
+ * be freed by the caller.
+ */
+id3_utf8_t *id3_ucs4_utf8duplicate(id3_ucs4_t const * ucs4);
 
 void id3_ucs4_putnumber(id3_ucs4_t *, unsigned long);
 unsigned long id3_ucs4_getnumber(id3_ucs4_t const *);

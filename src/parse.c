@@ -107,9 +107,7 @@ id3_latin1_t *id3_parse_latin1(id3_byte_t const **ptr, id3_length_t length,
   id3_latin1_t *latin1;
 
   end = memchr(*ptr, 0, length);
-  if (end == 0)
-    end = *ptr + length;
-  else {
+  if (end) {
     length = end - *ptr;
     terminated = 1;
   }

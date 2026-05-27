@@ -303,7 +303,7 @@ int search_tags(struct id3_file *file)
       id3_file_offset_t seek;
 
       seek = id3_field_getint(id3_frame_field(frame, 0));
-      if (seek < 0 || id3_fseek(file->iofile, seek, SEEK_CUR) == -1)
+      if (seek < size || id3_fseek(file->iofile, seek, SEEK_CUR) == -1)
         break;
 
       size = query_tag(file->iofile);

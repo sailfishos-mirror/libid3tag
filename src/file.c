@@ -286,9 +286,7 @@ int search_tags(struct id3_file *file)
     }
   }
 
-  /* look for a tag at the beginning of the file */
-
-  rewind(file->iofile);
+  fsetpos(file->iofile, &save_position);
 
   size = query_tag(file->iofile);
   if (size > 0) {
